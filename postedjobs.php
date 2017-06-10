@@ -10,6 +10,7 @@ else {
   require_once "class/company-service.php";
   $companyService = new CompanyService();
   $view_company = $companyService->viewCompany($companyId);
+  $view_jobs_from_company = $companyService->viewJobFromCompany($companyId);
 }
 
 ?>
@@ -25,7 +26,7 @@ else {
     <!-- Start of Page Title -->
     <div class="row">
       <div class="col-md-12">
-        <h2>blog - left sidebar ver.1</h2>
+        <h2>Posted Jobs</h2>
       </div>
     </div>
     <!-- End of Page Title -->
@@ -35,8 +36,6 @@ else {
       <div class="col-md-12">
         <ul class="breadcrumb">
           <li><a href="#">home</a></li>
-          <li class="active">blog</li>
-          <li class="active">blog - left sidebar</li>
         </ul>
       </div>
     </div>
@@ -58,88 +57,7 @@ else {
       <!-- Start of Blog Posts -->
       <div class="col-md-8 col-md-push-4 col-xs-12 blog-posts-wrapper">
 
-        <!-- Start of Blog Post Article 1 -->
-        <article class="col-md-12 blog-post">
 
-          <!-- Blog Post Thumbnail -->
-          <div class="col-md-4 blog-thumbnail">
-            <a href="blog-post-right-sidebar.html" class="hover-link"><img src="images/blog/blog1.jpg" class="img-responsive" alt=""></a>
-            <div class="date">
-              <span class="day">15</span>
-              <span class="publish-month">Mar</span>
-            </div>
-          </div>
-
-          <!-- Blog Post Description -->
-          <div class="col-md-8 blog-desc">
-            <h5><a href="blog-post-right-sidebar.html">top 10 tips for web developers</a></h5>
-            <div class="post-detail pt10 pb20">
-              <span><i class="fa fa-user"></i>Author</span>
-              <span><i class="fa fa-clock-o"></i>4:30</span>
-              <span><i class="fa fa-comments-o"></i>12 Comments</span>
-            </div>
-
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book....</p>
-            <a href="blog-post-right-sidebar.html" class="btn btn-blue btn-effect mt10">read more</a>
-          </div>
-        </article>
-        <!-- End of Blog Post Article 1 -->
-
-
-        <!-- Start of Blog Post Article 2 -->
-        <article class="col-md-12 blog-post">
-
-          <!-- Blog Post Thumbnail -->
-          <div class="col-md-4 blog-thumbnail">
-            <a href="blog-post-right-sidebar.html" class="hover-link"><img src="images/blog/blog2.jpg" class="img-responsive" alt=""></a>
-            <div class="date">
-              <span class="day">14</span>
-              <span class="publish-month">Mar</span>
-            </div>
-          </div>
-
-          <!-- Blog Post Description -->
-          <div class="col-md-8 blog-desc">
-            <h5><a href="blog-post-right-sidebar.html">how to prepare for an interview</a></h5>
-            <div class="post-detail pt10 pb20">
-              <span><i class="fa fa-user"></i>Author</span>
-              <span><i class="fa fa-clock-o"></i>4:30</span>
-              <span><i class="fa fa-comments-o"></i>12 Comments</span>
-            </div>
-
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book....</p>
-            <a href="blog-post-right-sidebar.html" class="btn btn-blue btn-effect mt10">read more</a>
-          </div>
-        </article>
-        <!-- End of Blog Post Article 2 -->
-
-
-        <!-- Start of Blog Post Article 3 -->
-        <article class="col-md-12 blog-post">
-
-          <!-- Blog Post Thumbnail -->
-          <div class="col-md-4 blog-thumbnail">
-            <a href="blog-post-right-sidebar.html" class="hover-link"><img src="images/blog/blog3.jpg" class="img-responsive" alt=""></a>
-            <div class="date">
-              <span class="day">13</span>
-              <span class="publish-month">Mar</span>
-            </div>
-          </div>
-
-          <!-- Blog Post Description -->
-          <div class="col-md-8 blog-desc">
-            <h5><a href="blog-post-right-sidebar.html">freelancing vs employment</a></h5>
-            <div class="post-detail pt10 pb20">
-              <span><i class="fa fa-user"></i>Author</span>
-              <span><i class="fa fa-clock-o"></i>4:30</span>
-              <span><i class="fa fa-comments-o"></i>12 Comments</span>
-            </div>
-
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book....</p>
-            <a href="blog-post-right-sidebar.html" class="btn btn-blue btn-effect mt10">read more</a>
-          </div>
-        </article>
-        <!-- End of Blog Post Article 3 -->
 
 
         <!-- Start of Pagination -->
@@ -201,8 +119,8 @@ else {
           </ul><br/><br/><br/>
           <h4 class="widget-title">Account Settings</h4>
           <ul class="sidebar-list">
-            <li><a href="editcompanyprofile.php">Edit Profile</a></li>
-            <li><a href="changecompanypassword.php">Change Password</a></li>
+            <li><a href="">Edit Profile</a></li>
+            <li><a href="">Change Password</a></li>
           </ul>
           </ul><br/><br/><br/>
           <h4 class="widget-title">Buy Package</h4>
