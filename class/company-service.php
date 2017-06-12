@@ -7,22 +7,22 @@ class CompanyService extends MySql
 		$this->MySql();
 	}
 
-  function newCompany($post)
+	function newCompany($post)
 	{
 		$add=0;
 		$this->beginTransaction();
 		try {
 
 			$company_name = $post['companyname'];
-      $company_email = $post['companyemail'];
-      $company_password = sha1($post['companypass']);
+			$company_email = $post['companyemail'];
+			$company_password = sha1($post['companypass']);
 			$company_address = $post['companyaddress'];
 			$company_location = $post['companylocation'];
 			$company_contact = $post['companycontact'];
-      $company_contact_person = $post['companycontactperson'];
+			$company_contact_person = $post['companycontactperson'];
 
 			$query = "INSERT INTO companies (company_name, company_email, company_password, company_address, company_location, company_contact, company_contact_person)
-      VALUES ('".$company_name."','".$company_email."','".$company_password."', '".$company_address."', '".$company_location."', '".$company_contact."', '".$company_contact_person."')";
+			VALUES ('".$company_name."','".$company_email."','".$company_password."', '".$company_address."', '".$company_location."', '".$company_contact."', '".$company_contact_person."')";
 			$this->ExecuteQuery($query, "insert");
 
 			if(empty($query)){
@@ -159,7 +159,7 @@ class CompanyService extends MySql
 
 	}
 
-  function addJob($post,$companyId)
+	function addJob($post,$companyId)
 	{
 		$data;
 		$this->beginTransaction();
@@ -170,11 +170,11 @@ class CompanyService extends MySql
 			$job_skills = $post['jobskills'];
 			$job_salary = $post['jobsalary'];
 			$job_location = $post["joblocation"];
-      $industry_id = $post["jobindustry"];
-      $functionalarea_id = $post["jobfunctionalarea"];
+			$industry_id = $post["jobindustry"];
+			$functionalarea_id = $post["jobfunctionalarea"];
 			$query = "INSERT INTO jobs (job_title, job_description, job_work_experience, job_skills, job_salary, job_location, industry_id, functionalarea_id, company_id )
-			 VALUES
-			 ('".$job_title."','".$job_description."','".$job_work_experience."', '".$job_skills."', '".$job_salary."', '".$job_location."', '".$industry_id."', '".$functionalarea_id."', '".$companyId."')";
+			VALUES
+			('".$job_title."','".$job_description."','".$job_work_experience."', '".$job_skills."', '".$job_salary."', '".$job_location."', '".$industry_id."', '".$functionalarea_id."', '".$companyId."')";
 
 			$data = $this->ExecuteQuery($query,"insert");
 			$this->commitTransaction();
@@ -184,7 +184,7 @@ class CompanyService extends MySql
 		return $data;
 	}
 
-  function viewJob()
+	function viewJob()
 	{
 		$this->beginTransaction();
 		try
@@ -204,7 +204,7 @@ class CompanyService extends MySql
 	{
 		$this->beginTransaction();
 		try {
-			$query = "SELECT * from jobs WHERE company_id='".$companyId."' AND job_status='active' ORDER BY timestamp DESC LIMIT 3";
+			$query = "SELECT * from jobs WHERE company_id='".$companyId."' AND job_status='active' AND job_archive='N' ORDER BY timestamp DESC LIMIT 3";
 			$data = $this->ExecuteQuery($query,"select");
 			$this->commitTransaction();
 		} catch (Exception $e) {
@@ -213,36 +213,38 @@ class CompanyService extends MySql
 		return $data;
 	}
 
-  function getJobDetail($jobId)
+	function getJobDetail($jobId)
 	{
-    $view;
+		$view;
 		$this->beginTransaction();
 		try
 		{
-			$query = "SELECT * FROM jobs where job_id='".$jobId."'";
-			$data = $this->ExecuteQuery($query, "select");
-      $view = $data[0];
+			$query = "SELECT * FROM jobs where job_id='".$jobId."' and job_archive='N'";
+			$view = $this->ExecuteQuery($query, "select");
+			//$view = $data[0];
 			$this->commitTransaction();
 		}
 		catch(Exception $e)
 		{
 			$this->rollbackTransaction();
 		}
-		return $view;
+		return $view[0];
 	}
 
 	function updateJobDetails($post,$jobId)
 	{
 		$data;
 		$this->beginTransaction();
-			$job_title = $post['job_title'];
-			$job_description =  mysql_real_escape_string($post['job_description']);
-			$job_work_experience = $post['job_work_experience'];
-			$job_skills =  mysql_real_escape_string($post['job_skills']);
-			$job_salary = $post['job_salary'];
-			$job_location = mysql_real_escape_string($post['job_location']);
-			$industry_id = $post['jobindustry'];
-      $functionalarea_id = $post['jobfunctionalarea'];
+		try {
+			$functionalarea_id = $post['jobfunctionalarea'];
+			$job_title = $post['jobtitle'];
+			$job_description = $post['jobdescription'];
+			$job_work_experience = $post['jobexperience'];
+			$job_skills = $post['jobskills'];
+			$job_salary = $post['jobsalary'];
+			$job_location = $post["joblocation"];
+			$industry_id = $post["jobindustry"];
+			$functionalarea_id = $post["jobfunctionalarea"];
 			$query="update jobs set job_title='$job_title', job_description='$job_description', job_work_experience='$job_work_experience', job_skills='$job_skills',
 			job_salary='$job_salary', job_location='$job_location', industry_id='$industry_id', functionalarea_id='$functionalarea_id'
 			where job_id='".$jobId."'";
@@ -253,20 +255,46 @@ class CompanyService extends MySql
 		}
 		return $data;
 	}
- 	//TODO: work on updating Job Status.
-	function updateJobStatus($post,$jobId)
+	function updateJobStatus($jobId)
 	{
-		$data;
+		$status;
 		$this->beginTransaction();
-			$job_title = $post['job_title'];
-			$query="update jobs set functionalarea_id='$functionalarea_id'
-			where job_id='".$jobId."'";
-			$data = $this->ExecuteQuery($query,"update");
+		try {
+			$job=$this->getJobDetail($jobId);
+			if($job['job_status']=="active")
+			{
+
+				$query="update jobs set job_status='inactive' where job_id='$jobId'";
+				$this->ExecuteQuery($query, "update");
+				$status="inactive";
+			}
+			else {
+
+				$query="update jobs set job_status='active' where job_id='$jobId'";
+				$this->ExecuteQuery($query, "update");
+				$status="active";
+			}
 			$this->commitTransaction();
 		} catch (Exception $e) {
 			$this->rollbackTransaction();
 		}
+		return $status;
+	}
+
+	function deleteJob($jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update jobs set job_archive='Y' where job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
 		return $data;
+
 	}
 
 	function viewCompanyById($companyId)
@@ -312,6 +340,50 @@ class CompanyService extends MySql
 		}
 		return $password;
 	}
+
+	function applyForJob($userId,$jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try
+		{
+			$query = "INSERT INTO applied_jobs (user_id, job_id, applied_date)
+			VALUES
+			('".$userId."','".$jobId."', NOW() )";
+			$data = $this->ExecuteQuery($query, "insert");
+			$this->commitTransaction();
+		}
+		catch(Exception $e)
+		{
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function appliedJobs($userId, $jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try
+		{
+			$query = "SELECT * FROM applied_jobs WHERE user_id='".$userId."' AND job_id='".$jobId."'";
+			$data = $this->ExecuteQuery($query, "select");
+			if(!empty($data))
+			{
+			$data= $data[0];
+		}
+		else {
+			$data=0;
+		}
+		$this->commitTransaction();
+		}
+		catch(Exception $e)
+		{
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
 
 
 }

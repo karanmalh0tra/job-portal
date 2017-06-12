@@ -7,7 +7,7 @@ require_once "../class/company-service.php";
 $companyService = new CompanyService();
 $success = $companyService->authenticateCompany($email,$password);
   if($success) {
-    header("location:../company-detail.php");
+    header("location:../companydashboard.php");
 
   }
   else {

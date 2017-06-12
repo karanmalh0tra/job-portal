@@ -19,6 +19,38 @@ else {
 ?>
 
 <?php include "header.php";?>
+<script>
+jQuery(document).ready(function(){
+
+  jQuery.noConflict()(function(){
+    //alert("hi");
+    $(document).on("click",".status",function(){
+
+      var jobId = $(this).attr("id");
+      //		alert("hi"+reviewId);
+      var this_ref = this;
+      $.ajax({
+        url:"controller/editjobstatus.php",
+        type:"GET",
+        data:"jobId="+jobId,
+        success: function(response)
+        {
+          alert(response);
+          if(response =="inactive"){
+            $(this_ref).html(response).wrapInner('<span class="btn btn-warning"></span>');
+            $(this_ref).parent().parent().attr("style","background:#f1d4d9;");
+            $(this_ref).removeClass("status").addClass("status");
+          }else{
+            $(this_ref).html(response).wrapInner('<span class="btn btn-success"></span>');
+            $(this_ref).parent().parent().attr("style","background:#d4f1d4;");
+            $(this_ref).removeClass("status").addClass("status");
+          }
+        }
+      });
+    });
+  });
+});
+</script>
 
 
 
@@ -85,9 +117,9 @@ else {
               <td><?php echo $jobs['job_location']; ?></td>
               <td><?php echo $jobs['industry_id']; ?></td>
               <td><?php echo $jobs['functionalarea_id']; ?></td>
-              <td><a href="controller/editjobstatus.php?jobId=<?php echo $jobs['job_id']; ?>">Change Status</a></td>
-              <td><a href="controller/editjob.php?jobId=<?php echo $jobs['job_id']; ?>">Edit</a>
-                <a href="deletejob.php?userId=<?php echo $jobs['job_id'] ?>"><span onclick="return confirm('Are you sure you want to Delete?')">delete</span></a>
+              <td ><a class="status" id="<?php echo $jobs['job_id']; ?>"><?php if(($jobs['job_status'] == 'active')){ echo "<span class='btn btn-success'>active</span>";}else{echo "<span class='btn btn-warning'>inactive</span>";} ?></a></td>
+              <td><a href="editjob.php?jobId=<?php echo $jobs['job_id']; ?>">Edit</a>
+                <a href="controller/deletejob.php?jobId=<?php echo $jobs['job_id'] ?>"><span onclick="return confirm('Are you sure you want to Delete?')">delete</span></a>
               </td>
             </tr>
             <?php
