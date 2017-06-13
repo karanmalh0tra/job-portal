@@ -6,7 +6,6 @@ session_start();
 require_once "class/company-service.php";
 $companyService = new CompanyService();
 $view_job = $companyService->viewJob();
-//$userId = ;
 
 
 
@@ -56,7 +55,6 @@ $view_job = $companyService->viewJob();
               <div class="job-info">
                 <span class="company"><i class="fa fa-building-o"></i><?php
                 $view_company = $companyService->viewCompanyById($job['company_id']);
-                // $companyname = $view_company['company_name'];
                 echo $view_company['company_name'];
                 ?></span>
                 <span class="location"><i class="fa fa-map-marker"></i><?php echo $job['job_location']; ?></span>
@@ -67,25 +65,24 @@ $view_job = $companyService->viewJob();
             <div class="col-md-2 col-xs-3 ptb30">
               <div class="job-category" id="applied">
                 <a href="job-detail.php?jobId=<?php echo $job['job_id']; ?>" class="btn btn-green btn-small btn-effect">details</a>
-                <!-- <a href="javascript:void(0)" class="btn btn-green btn-small btn-effect">apply</a> -->
                 <?php
-                if(isset($_SESSION['user_id'])){
+                if(!empty($_SESSION['user_id'])) {
                   $applied_job = $companyService->appliedJobs($_SESSION['user_id'],$job['job_id']);
                   if(!empty($applied_job)){
-                    if($applied_job['status'] == "process"){ ?>
+                    if(!empty($applied_job['status'])){ ?>
                       <span class='btn btn-success'> applied </span>
-                      <?php    } }else {  ?>
+                      <?php    } } }else {  ?>
 
                         <a class="jobStatus" id="<?php echo $job['job_id']; ?>">
 
                           <span class='btn btn-warning'>apply</span>
                         </a>
-                        <?php }?>
+                        <?php } ?>
                       </div>
                     </div>
                   </div>
                   <!-- End of Single Job Post 1 -->
-                  <?php } }?>
+                  <?php }  ?>
 
 
                 </div>
