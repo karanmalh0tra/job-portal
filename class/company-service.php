@@ -189,7 +189,7 @@ class CompanyService extends MySql
 		$this->beginTransaction();
 		try
 		{
-			$query = "SELECT * FROM jobs";
+			$query = "SELECT * FROM jobs WHERE job_archive='N' ";
 			$data = $this->ExecuteQuery($query, "select");
 			$this->commitTransaction();
 		}
@@ -383,6 +383,96 @@ class CompanyService extends MySql
 		}
 		return $data;
 	}
+
+	function viewApplications($jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query = "SELECT * FROM applied_jobs WHERE job_id='".$jobId."' AND status='process'";
+			$data = $this->ExecuteQuery($query, "select");
+			$this->commitTransaction();
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function applicantShortlist($userId,$jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update applied_jobs set status='shortlisted' where user_id='$userId' and job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function applicantAccept($userId,$jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update applied_jobs set status='accepted' where user_id='$userId' and job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function applicantReject($userId,$jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update applied_jobs set status='rejected' where user_id='$userId' and job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function viewShortlistedApplications($jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query = "SELECT * FROM applied_jobs WHERE job_id='".$jobId."' AND status='shortlisted'";
+			$data = $this->ExecuteQuery($query, "select");
+			$this->commitTransaction();
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function removeApplicantFromShortlist($userId, $jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update applied_jobs set status='process' where user_id='$userId' and job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+
 
 
 

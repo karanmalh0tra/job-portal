@@ -6,15 +6,23 @@ if(!$_SESSION['company_email'])
   header("Location: companylogin.php");
 }
 else {
+  require_once "class/user-service.php";
+  $userService = new UserService();
+  $jobId = $_GET['jobId'];
+
   $companyId = $_SESSION['company_id'];
   require_once "class/company-service.php";
   $companyService = new CompanyService();
+  $view_applications = $companyService->viewApplications($jobId);
   $view_job_from_company = $companyService->viewJobFromCompany($companyId);
+  $get_job_detail = $companyService->getJobDetail($jobId);
+
 }
 
 ?>
 
 <?php include "header.php";?>
+
 
 
 
@@ -25,7 +33,7 @@ else {
     <!-- Start of Page Title -->
     <div class="row">
       <div class="col-md-12">
-        <h2>View Applications</h2>
+        <h2>Applications for <?php echo $get_job_detail['job_title']; ?></h2>
       </div>
     </div>
     <!-- End of Page Title -->
@@ -57,28 +65,35 @@ else {
       <div class="col-md-8 col-md-push-4 col-xs-12 blog-posts-wrapper">
 
         <table border="1px solid black">
+          <caption>Users Applied for the Job</caption>
           <tr>
-            <th>Job Title</th>
-            <th>Job Description</th>
-            <th>Job Skills</th>
-            <th>Work Experience Required</th>
-            <th>Job Salary</th>
-            <th>Job Location</th>
+            <th>User Name</th>
+            <th>Mobile Number</th>
+            <th>Email</th>
+            <th>Resume Headline</th>
+            <th>Profile Summary</th>
+            <th>Key Skills</th>
             <th>Action</th>
           </tr>
-          <?php foreach($view_job_from_company as $jobsfromcompany)
-          { ?>
+          <?php foreach($view_applications as $jobsfromcompany)
+          {
+            $view_users = $userService->viewUser($jobsfromcompany['user_id']);
+            ?>
             <tr>
-              <td><?php echo $jobsfromcompany['job_title'] ?></td>
-              <td><?php echo $jobsfromcompany['job_description'] ?></td>
-              <td><?php echo $jobsfromcompany['job_skills'] ?></td>
-              <td><?php echo $jobsfromcompany['job_work_experience'] ?></td>
-              <td><?php echo $jobsfromcompany['job_salary'] ?></td>
-              <td><?php echo $jobsfromcompany['job_location'] ?></td>
-              <td><a href="viewappliedusers.php?jobId=<?php echo $jobsfromcompany['job_id']; ?>">View Users</a></td>
+              <td><?php echo $view_users['user_name']; ?></td>
+              <td><?php echo $view_users['user_mobile']; ?></td>
+              <td><?php echo $view_users['user_email']; ?></td>
+              <td><?php echo $view_users['resume_headline']; ?></td>
+              <td><?php echo $view_users['profile_summary']; ?></td>
+              <td><?php echo $view_users['user_key_skills']; ?></td>
+              <td><p><a href="controller/shortlistapplicant.php?userId=<?php echo $view_users['user_id']; ?>&jobId=<?php echo $jobId; ?>">Shortlist</a></p>
+                <p><a href="controller/acceptapplicant.php?userId=<?php echo $view_users['user_id']; ?>&jobId=<?php echo $jobId; ?>">Accept</a></p>
+                <p><a href="controller/rejectapplicant.php?userId=<?php echo $view_users['user_id']; ?>&jobId=<?php echo $jobId; ?>">Reject</a></p>
+              </td>
             </tr>
             <?php } ?>
           </table>
+
 
         </div>
         <!-- End of Blog Posts -->
@@ -141,6 +156,29 @@ else {
 </section>
 <!-- ===== End of Blog Listing Section ===== -->
 
+
+
+
+
+<!-- ===== Start of Get Started Section ===== -->
+<section class="get-started ptb40">
+  <div class="container">
+    <div class="row ">
+
+      <!-- Column -->
+      <div class="col-md-10 col-sm-9 col-xs-12">
+        <h3 class="text-white">20,000+ People trust Cariera! Be one of them today.</h3>
+      </div>
+
+      <!-- Column -->
+      <div class="col-md-2 col-sm-3 col-xs-12">
+        <a href="https://themeforest.net/item/cariera-job-board-html-template/19568206?ref=gnodesign" target="_blank" class="btn btn-blue btn-effect">get start now</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ===== End of Get Started Section ===== -->
 
 
 

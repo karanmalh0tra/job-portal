@@ -180,20 +180,18 @@ else {
         <h4 class="widget-title">Manage Jobs</h4>
         <ul class="sidebar-list">
           <li><a href="postjob.php">Post a Job</a></li>
-          <li><a href="">Edit Jobs</a></li>
-          <li><a href="">Delete Jobs</a></li>
-          <li><a href="">Activate and Deactivate Jobs</a></li>
+          <li><a href="modifyjob.php">Modify Jobs</a></li>
         </ul><br/><br/><br/>
         <h4 class="widget-title">Manage Applications</h4>
         <ul class="sidebar-list">
-          <li><a href="">View Applications</a></li>
+          <li><a href="viewapplications.php">View Applications</a></li>
           <li><a href="">View Candidate Profile</a></li>
           <li><a href="">Reply Candidate via Email</a></li>
           <li><a href="">Save Profile</a></li>
         </ul><br/><br/><br/>
         <h4 class="widget-title">Saved Profiles</h4>
         <ul class="sidebar-list">
-          <li><a href="">View Candidate &amp; Profile</a></li>
+          <li><a href="viewshortlisted.php">View Candidate &amp; Profile</a></li>
           <li><a href="">Reply Candidate via Email</a></li>
           <li><a href="">Remove from Saved Listing</a></li>
         </ul><br/><br/><br/>
@@ -202,15 +200,15 @@ else {
           <li><a href="editcompanyprofile.php">Edit Profile</a></li>
           <li><a href="changecompanypassword.php">Change Password</a></li>
         </ul>
-      </ul><br/><br/><br/>
-      <h4 class="widget-title">Buy Package</h4>
-      <ul class="sidebar-list">
-        <li><a href="">Free</a></li>
-        <li><a href="">Starter</a></li>
-        <li><a href="">Premium</a></li>
-      </ul><br/><br/><br/>
-    </div>
-    <!-- End of Categories -->
+        </ul><br/><br/><br/>
+        <h4 class="widget-title">Buy Package</h4>
+        <ul class="sidebar-list">
+          <li><a href="">Free</a></li>
+          <li><a href="">Starter</a></li>
+          <li><a href="">Premium</a></li>
+        </ul><br/><br/><br/>
+      </div>
+      <!-- End of Categories -->
 
 
   </div>

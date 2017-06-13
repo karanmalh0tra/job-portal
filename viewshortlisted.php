@@ -25,7 +25,7 @@ else {
     <!-- Start of Page Title -->
     <div class="row">
       <div class="col-md-12">
-        <h2>View Applications</h2>
+        <h2>Shortlisted Applicants</h2>
       </div>
     </div>
     <!-- End of Page Title -->
@@ -75,7 +75,7 @@ else {
               <td><?php echo $jobsfromcompany['job_work_experience'] ?></td>
               <td><?php echo $jobsfromcompany['job_salary'] ?></td>
               <td><?php echo $jobsfromcompany['job_location'] ?></td>
-              <td><a href="viewappliedusers.php?jobId=<?php echo $jobsfromcompany['job_id']; ?>">View Users</a></td>
+              <td><a href="shortlistedapplicants.php?jobId=<?php echo $jobsfromcompany['job_id']; ?>">View Shortlisted</a></td>
             </tr>
             <?php } ?>
           </table>

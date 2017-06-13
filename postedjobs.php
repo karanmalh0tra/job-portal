@@ -46,9 +46,6 @@ else {
 <!-- =============== End of Page Header 1 Section =============== -->
 
 
-
-
-
 <!-- ===== Start of Blog Listing Section ===== -->
 <section class="blog-listing ptb80" id="version1">
   <div class="container">
@@ -56,9 +53,27 @@ else {
 
       <!-- Start of Blog Posts -->
       <div class="col-md-8 col-md-push-4 col-xs-12 blog-posts-wrapper">
+        <?php foreach($view_jobs_from_company as $viewjobs){
+           ?>
+        <!-- Start of Blog Post Article 1 -->
+        <article class="col-md-12 blog-post">
 
 
 
+          <!-- Blog Post Description -->
+          <div class="col-md-8 blog-desc">
+            <h5><a href="blog-post-right-sidebar.html"><?php echo $viewjobs['job_title']; ?></a></h5>
+            <br/>
+            <p><h6><?php echo $viewjobs['job_description']; ?><h6></p>
+            <br/>
+            <p><?php echo $viewjobs['job_skills']; ?></p>
+            <br/>
+            <p><?php echo $viewjobs['timestamp']; ?></p>
+            <br/>
+          </div>
+        </article>
+        <?php } ?>
+        <!-- End of Blog Post Article 1 -->
 
         <!-- Start of Pagination -->
         <div class="col-md-12">
@@ -100,27 +115,25 @@ else {
           <h4 class="widget-title">Manage Jobs</h4>
           <ul class="sidebar-list">
             <li><a href="postjob.php">Post a Job</a></li>
-            <li><a href="">Edit Jobs</a></li>
-            <li><a href="">Delete Jobs</a></li>
-            <li><a href="">Activate and Deactivate Jobs</a></li>
+            <li><a href="modifyjob.php">Modify Jobs</a></li>
           </ul><br/><br/><br/>
           <h4 class="widget-title">Manage Applications</h4>
           <ul class="sidebar-list">
-            <li><a href="">View Applications</a></li>
+            <li><a href="viewapplications.php">View Applications</a></li>
             <li><a href="">View Candidate Profile</a></li>
             <li><a href="">Reply Candidate via Email</a></li>
             <li><a href="">Save Profile</a></li>
           </ul><br/><br/><br/>
           <h4 class="widget-title">Saved Profiles</h4>
           <ul class="sidebar-list">
-            <li><a href="">View Candidate &amp; Profile</a></li>
+            <li><a href="viewshortlisted.php">View Candidate &amp; Profile</a></li>
             <li><a href="">Reply Candidate via Email</a></li>
             <li><a href="">Remove from Saved Listing</a></li>
           </ul><br/><br/><br/>
           <h4 class="widget-title">Account Settings</h4>
           <ul class="sidebar-list">
-            <li><a href="">Edit Profile</a></li>
-            <li><a href="">Change Password</a></li>
+            <li><a href="editcompanyprofile.php">Edit Profile</a></li>
+            <li><a href="changecompanypassword.php">Change Password</a></li>
           </ul>
           </ul><br/><br/><br/>
           <h4 class="widget-title">Buy Package</h4>

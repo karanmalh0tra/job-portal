@@ -59,14 +59,7 @@ else {
         <!-- Start of Blog Post Article 1 -->
         <article class="col-md-12 blog-post">
 
-          <!-- Blog Post Thumbnail -->
-          <div class="col-md-4 blog-thumbnail">
-            <a href="blog-post-right-sidebar.html" class="hover-link"><img src="images/blog/blog1.jpg" class="img-responsive" alt=""></a>
-            <div class="date">
-              <span class="day">15</span>
-              <span class="publish-month">Mar</span>
-            </div>
-          </div>
+
 
           <!-- Blog Post Description -->
           <div class="col-md-8 blog-desc">
@@ -82,63 +75,6 @@ else {
           </div>
         </article>
         <!-- End of Blog Post Article 1 -->
-
-
-        <!-- Start of Blog Post Article 2 -->
-        <article class="col-md-12 blog-post">
-
-          <!-- Blog Post Thumbnail -->
-          <div class="col-md-4 blog-thumbnail">
-            <a href="blog-post-right-sidebar.html" class="hover-link"><img src="images/blog/blog2.jpg" class="img-responsive" alt=""></a>
-            <div class="date">
-              <span class="day">14</span>
-              <span class="publish-month">Mar</span>
-            </div>
-          </div>
-
-          <!-- Blog Post Description -->
-          <div class="col-md-8 blog-desc">
-            <h5><a href="blog-post-right-sidebar.html">how to prepare for an interview</a></h5>
-            <div class="post-detail pt10 pb20">
-              <span><i class="fa fa-user"></i>Author</span>
-              <span><i class="fa fa-clock-o"></i>4:30</span>
-              <span><i class="fa fa-comments-o"></i>12 Comments</span>
-            </div>
-
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book....</p>
-            <a href="blog-post-right-sidebar.html" class="btn btn-blue btn-effect mt10">read more</a>
-          </div>
-        </article>
-        <!-- End of Blog Post Article 2 -->
-
-
-        <!-- Start of Blog Post Article 3 -->
-        <article class="col-md-12 blog-post">
-
-          <!-- Blog Post Thumbnail -->
-          <div class="col-md-4 blog-thumbnail">
-            <a href="blog-post-right-sidebar.html" class="hover-link"><img src="images/blog/blog3.jpg" class="img-responsive" alt=""></a>
-            <div class="date">
-              <span class="day">13</span>
-              <span class="publish-month">Mar</span>
-            </div>
-          </div>
-
-          <!-- Blog Post Description -->
-          <div class="col-md-8 blog-desc">
-            <h5><a href="blog-post-right-sidebar.html">freelancing vs employment</a></h5>
-            <div class="post-detail pt10 pb20">
-              <span><i class="fa fa-user"></i>Author</span>
-              <span><i class="fa fa-clock-o"></i>4:30</span>
-              <span><i class="fa fa-comments-o"></i>12 Comments</span>
-            </div>
-
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book....</p>
-            <a href="blog-post-right-sidebar.html" class="btn btn-blue btn-effect mt10">read more</a>
-          </div>
-        </article>
-        <!-- End of Blog Post Article 3 -->
-
 
         <!-- Start of Pagination -->
         <div class="col-md-12">
@@ -185,7 +121,7 @@ else {
           </ul><br/><br/><br/>
           <h4 class="widget-title">Saved Profiles</h4>
           <ul class="sidebar-list">
-            <li><a href="">View Candidate &amp; Profile</a></li>
+            <li><a href="viewshortlisted.php">View Candidate &amp; Profile</a></li>
             <li><a href="">Reply Candidate via Email</a></li>
             <li><a href="">Remove from Saved Listing</a></li>
           </ul><br/><br/><br/>
