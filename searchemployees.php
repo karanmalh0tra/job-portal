@@ -10,6 +10,9 @@ else {
   require_once "class/company-service.php";
   $companyService = new CompanyService();
   $view_company = $companyService->viewCompany($companyId);
+  $skills = $_GET['skills'];
+  $location = $_GET['location'];
+  $view_searched_employees = $companyService->searchEmployees($skills,$location);
 }
 
 ?>
@@ -25,7 +28,7 @@ else {
     <!-- Start of Page Title -->
     <div class="row">
       <div class="col-md-12">
-        <h2>company dashboard</h2>
+        <h2>Search Employees</h2>
       </div>
     </div>
     <!-- End of Page Title -->
@@ -39,13 +42,6 @@ else {
       </div>
     </div>
     <!-- End of Breadcrumb -->
-    <div class="form-group">
-      <form name="searchemployeeform" id="searchemployeeform" class="mt-50" action="searchemployees.php" method="get" >
-        <label><h6>Skills:</h6></label><textarea name="skills" rows="1" cols="20" style="color:black;"></textarea>
-        <label><h6>Location:</h6></label><textarea name="location" rows="1" cols="20" style="color:black;"></textarea>
-        <button type="submit" class="btn btn-blue btn-effect">search</button>
-      </form>
-    </div>
 
   </div>
 </section>
@@ -62,38 +58,24 @@ else {
 
       <!-- Start of Blog Posts -->
       <div class="col-md-8 col-md-push-4 col-xs-12 blog-posts-wrapper">
-
-        <!-- Start of Blog Post Article 1 -->
-        <article class="col-md-12 blog-post">
-
-
-
-          <!-- Blog Post Description -->
-          <div class="col-md-8 blog-desc">
-            <h5><a href="blog-post-right-sidebar.html">top 10 tips for web developers</a></h5>
-            <div class="post-detail pt10 pb20">
-              <span><i class="fa fa-user"></i>Author</span>
-              <span><i class="fa fa-clock-o"></i>4:30</span>
-              <span><i class="fa fa-comments-o"></i>12 Comments</span>
-            </div>
-
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book....</p>
-            <a href="blog-post-right-sidebar.html" class="btn btn-blue btn-effect mt10">read more</a>
-          </div>
-        </article>
-        <!-- End of Blog Post Article 1 -->
-
-        <!-- Start of Pagination -->
-        <div class="col-md-12">
-          <ul class="pagination list-inline text-center">
-            <li class="active"><a href="javascript:void(0)">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">Next</a></li>
-          </ul>
-        </div>
-        <!-- End of Pagination -->
+        <table border="1px solid black">
+          <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Skills</th>
+            <th>Gender</th>
+          </tr>
+        <?php
+        foreach($view_searched_employees as $employees)
+        { ?>
+            <tr>
+              <td><?php echo $employees['user_name']; ?></td>
+              <td><?php echo $employees['user_location']; ?></td>
+              <td><?php echo $employees['user_key_skills']; ?></td>
+              <td><?php echo $employees['user_gender']; ?></td>
+            </tr>
+          <?php }?>
+        </table>
 
       </div>
       <!-- End of Blog Posts -->
@@ -101,6 +83,12 @@ else {
 
       <!-- Start of Blog Sidebar -->
       <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
+
+
+
+        <!-- Start of Social Media -->
+
+
 
         <!-- Start of Categories -->
         <div class="col-md-12 mt40">

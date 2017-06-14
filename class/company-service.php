@@ -552,20 +552,29 @@ class CompanyService extends MySql
 		}
 		return $data;
 	}
- /*
-	function removeSavedJobs($userId, $jobId)
+
+	function searchEmployees($skills,$location)
 	{
 		$data;
 		$this->beginTransaction();
 		try {
-			$query="update saved_jobs set status='unsaved' where user_id='$userId' and job_id='$jobId'";
-			$data=$this->ExecuteQuery($query,"update");
-			$this->commitTransaction();
-		}
-		catch(Exception $e) {
-			$this->rollbackTransaction();
+			$query = "select * from users where user_location LIKE '%$location%' and";
+			$skills2 = mysql_real_escape_string($skills);
+			$skills1 = explode(' ', $skills2);
+			$keyCount = 0;
+			foreach ($skills1 as $skill) {
+				if ($keyCount > 0){
+        $query .= " and";
+    }
+    $query .= " user_key_skills LIKE '%$skill%'";
+    ++$keyCount;
+			}
+			$data=$this->ExecuteQuery($query,"select");
+		} catch (Exception $e) {
+				$this->rollbackTransaction();
 		}
 		return $data;
-	} */
+	}
+
 }
 ?>

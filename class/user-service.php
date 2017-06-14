@@ -206,9 +206,11 @@ class UserService extends MySql
 			$user_location = mysql_real_escape_string($post['location']);
 			$industry_id = $post['industry'];
 			$functionalarea_id = $post['functionalarea'];
-			$user_key_skills = mysql_real_escape_string($post['user_key_skills']);
+			$user_key_skills1 = mysql_real_escape_string($post['user_key_skills']);
 			//$role_id= $post['role'];
 			//role_id='$role_id'
+			$user_key_skills2 = explode(',', $user_key_skills1);
+			$user_key_skills = implode(' ',$user_key_skills2);
 			$address = mysql_real_escape_string($post['address']);
 			$hometown = mysql_real_escape_string($post['hometown']);
 			$pincode = $post['pincode'];
