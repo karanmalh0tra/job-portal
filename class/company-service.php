@@ -472,9 +472,100 @@ class CompanyService extends MySql
 		return $data;
 	}
 
+	function savedJobs($userId, $jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try
+		{
+			$query = "SELECT * FROM saved_jobs WHERE user_id='".$userId."' AND job_id='".$jobId."'";
+			$data = $this->ExecuteQuery($query, "select");
+			if(!empty($data))
+			{
+			$data= $data[0];
+		}
+		else {
+			$data=0;
+		}
+		$this->commitTransaction();
+		}
+		catch(Exception $e)
+		{
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
 
+	function viewSavedJobs($userId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query = "SELECT * FROM saved_jobs WHERE user_id='".$userId."' AND status='saved'";
+			$data = $this->ExecuteQuery($query, "select");
+			$this->commitTransaction();
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
 
+	function addSavedJob($userId, $jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try
+		{
+			$query = "SELECT * from saved_jobs where user_id='".$userId."' and job_id='".$jobId."' ";
+			$data=$this->ExecuteQuery($query,"select");
+			if(empty($data)){
+			$query = "INSERT INTO saved_jobs (user_id, job_id, status)
+			VALUES
+			('".$userId."','".$jobId."', 'saved' )";
+			$data = $this->ExecuteQuery($query, "insert");
+		}
+		else {
+			$query = "UPDATE saved_jobs set status='saved'
+			where user_id='".$userId."' and job_id='".$jobId."'";
+			$data = $this->ExecuteQuery($query, "update");
+		}
+			$this->commitTransaction();
+		}
+		catch(Exception $e)
+		{
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
 
-
+	function removeSavedJob($userId, $jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update saved_jobs set status='unsaved' where user_id='$userId' and job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+ /*
+	function removeSavedJobs($userId, $jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update saved_jobs set status='unsaved' where user_id='$userId' and job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	} */
 }
 ?>

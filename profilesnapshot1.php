@@ -130,7 +130,7 @@ jQuery(document).ready(function(){
               </div>
 
               <!-- Form Group -->
-              <!--TODO: View the date of birth from the database -->
+
               <div class="form-group">
                 <label>date of birth</label>
                 <input class="form-control" type="date" name="date_of_birth" id="date_of_birth" value="<?php echo $view_user['date_of_birth']; ?>">
@@ -348,7 +348,7 @@ jQuery(document).ready(function(){
             </ul><br/><br/><br/>
             <h4 class="widget-title">Jobs and Applications</h4>
             <ul class="sidebar-list">
-              <li><a href="">Saved Jobs</a></li>
+              <li><a href="savedjobs.php">Saved Jobs</a></li>
               <li><a href="">Application History</a></li>
             </ul><br/><br/><br/>
             <h4 class="widget-title">Settings</h4>

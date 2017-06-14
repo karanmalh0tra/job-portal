@@ -7,7 +7,7 @@ require_once "../class/user-service.php";
 $userService = new UserService();
 $success = $userService->authenticateUser($email,$password);
   if($success) {
-    header("location:../profilesnapshot.php");
+    header("location:../dashboard.php");
 
   }
   else {

@@ -2,13 +2,9 @@
 session_start();
 ?>
 <?php
-//require_once "class/user-service.php";
 require_once "class/company-service.php";
 $companyService = new CompanyService();
 $view_job = $companyService->viewJob();
-
-
-
 ?>
 
 <?php include "header.php";?>
@@ -28,13 +24,6 @@ $view_job = $companyService->viewJob();
         <?php
         foreach($view_job as $job)
         {
-          //if(isset($_SESSION['user_id'])){
-
-          //  }
-
-
-
-
           ?>
           <div class="single-job-post row nomargin">
             <!-- Job Company -->
@@ -68,101 +57,167 @@ $view_job = $companyService->viewJob();
                 <?php
                 if(!empty($_SESSION['user_id'])) {
                   $applied_job = $companyService->appliedJobs($_SESSION['user_id'],$job['job_id']);
-                  if(!empty($applied_job)){
+                  $saved_job = $companyService->savedJobs($_SESSION['user_id'],$job['job_id']);
+                  //if(!empty($applied_job)){
                     if(!empty($applied_job['status'])){ ?>
                       <span class='btn btn-success'> applied </span>
-                      <?php    } } }else {  ?>
 
-                        <a class="jobStatus" id="<?php echo $job['job_id']; ?>">
+                      <?php    }
+                  //  }
+                    else {  ?>
 
-                          <span class='btn btn-warning'>apply</span>
+                      <a class="jobStatus" id="<?php echo $job['job_id']; ?>">
+
+                        <span class='btn btn-warning'>apply</span>
+                      </a>
+
+                      <?php }
+                      if($saved_job['status']=="saved")
+                      { ?>
+                        <a class="removeJob" id="<?php echo $job['job_id']; ?>">
+                          <span class='btn btn-success'>Remove</span>
                         </a>
-                        <?php } ?>
-                      </div>
+                      <?php }
+                      elseif($saved_job['status']=="unsaved" || empty($saved_job['status'])) { ?>
+                        <a class="saveJob" id="<?php echo $job['job_id']; ?>">
+
+                          <span class='btn btn-warning'>Save</span>
+                        </a>
+                      <?php }
+
+                     }?>
                     </div>
                   </div>
-                  <!-- End of Single Job Post 1 -->
-                  <?php }  ?>
-
-
                 </div>
-                <!-- End of Job Post Wrapper -->
+                <!-- End of Single Job Post 1 -->
+                <?php }  ?>
+
 
               </div>
-              <!-- End of Job Post Main -->
-
-
-              <!-- Start of Job Post Sidebar -->
-              <div class="col-md-4 col-xs-12 job-post-sidebar">
-                <h2 class="capitalize"><i class="fa fa-star"></i>golden jobs</h2>
-
-                <!-- Start of Featured Job Widget -->
-                <div class="featured-job widget mt60">
-
-                  <!-- Start of Company Logo -->
-                  <div class="company">
-                    <img src="images/companies/cloudify.svg" alt="">
-                  </div>
-                  <!-- End of Company Logo -->
-
-                  <!-- Start of Featured Job Info -->
-                  <div class="featured-job-info">
-
-                    <!-- Job Title -->
-                    <div class="job-title">
-                      <h5 class="uppercase pull-left">ui designer</h5>
-                      <a href="javascript:void(0)" class="btn btn-green btn-small btn-effect pull-right">full time</a>
-                    </div>
-
-                    <!-- Job Info -->
-                    <div class="job-info pt5">
-                      <span id="company"><i class="fa fa-building-o"></i>cloudify</span>
-                      <span id="location"><i class="fa fa-map-marker"></i>london, uk</span>
-                    </div>
-
-                    <p class="mt20"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-
-                    <!-- View Job Button -->
-                    <div class="text-center mt20">
-                      <a href="job-page.html" class="btn btn-purple btn-small btn-effect">view job</a>
-                    </div>
-                  </div>
-                  <!-- End of Featured Job Info -->
-
-                </div>
-                <!-- End of Featured Job Widget -->
-
-              </div>
-              <!-- End of Job Post Sidebar -->
+              <!-- End of Job Post Wrapper -->
 
             </div>
-          </section>
-          <!-- ===== End of Job Post Section ===== -->
+            <!-- End of Job Post Main -->
 
 
-          <?php include "footer.php";?>
-          <script>
-          $(document).on("click",".jobStatus",function(){
-            var jobId = $(this).attr('id');
-            var this_ref = this;
-            var str="jobId="+jobId;
+            <!-- Start of Job Post Sidebar -->
+            <div class="col-md-4 col-xs-12 job-post-sidebar">
+              <h2 class="capitalize"><i class="fa fa-star"></i>golden jobs</h2>
 
-            $.ajax({
-              type: "GET",
-              data: str,
-              url: 'controller/applyforjob.php',
-              cache: false,
-              success: function(response) {
-                if(response == -1) {
-                  alert("Please Log In");
-                }
-                else {
-                  $(this_ref).html(response).wrapInner('<span class="btn btn-success">applied</span>');
-                  $(this_ref).removeClass("jobStatus");
-                  $(this_ref).$('#applied').load('viewjob.php #applied');
-                }
+              <!-- Start of Featured Job Widget -->
+              <div class="featured-job widget mt60">
+
+                <!-- Start of Company Logo -->
+                <div class="company">
+                  <img src="images/companies/cloudify.svg" alt="">
+                </div>
+                <!-- End of Company Logo -->
+
+                <!-- Start of Featured Job Info -->
+                <div class="featured-job-info">
+
+                  <!-- Job Title -->
+                  <div class="job-title">
+                    <h5 class="uppercase pull-left">ui designer</h5>
+                    <a href="javascript:void(0)" class="btn btn-green btn-small btn-effect pull-right">full time</a>
+                  </div>
+
+                  <!-- Job Info -->
+                  <div class="job-info pt5">
+                    <span id="company"><i class="fa fa-building-o"></i>cloudify</span>
+                    <span id="location"><i class="fa fa-map-marker"></i>london, uk</span>
+                  </div>
+
+                  <p class="mt20"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+
+                  <!-- View Job Button -->
+                  <div class="text-center mt20">
+                    <a href="job-page.html" class="btn btn-purple btn-small btn-effect">view job</a>
+                  </div>
+                </div>
+                <!-- End of Featured Job Info -->
+
+              </div>
+              <!-- End of Featured Job Widget -->
+
+            </div>
+            <!-- End of Job Post Sidebar -->
+
+          </div>
+        </section>
+        <!-- ===== End of Job Post Section ===== -->
+
+
+        <?php include "footer.php";?>
+        <script>
+        $(document).on("click",".jobStatus",function(){
+          var jobId = $(this).attr('id');
+          var this_ref = this;
+          var str="jobId="+jobId;
+
+          $.ajax({
+            type: "GET",
+            data: str,
+            url: 'controller/applyforjob.php',
+            cache: false,
+            success: function(response) {
+              if(response == -1) {
+                alert("Please Log In");
               }
-            });
-
+              else {
+                $(this_ref).html(response).wrapInner('<span class="btn btn-success">applied</span>');
+                $(this_ref).removeClass("jobStatus");
+                $(this_ref).$('#applied').load('viewjob.php #applied');
+              }
+            }
           });
-          </script>
+
+        });
+        $(document).on("click",".saveJob",function(){
+          var jobId = $(this).attr('id');
+          var this_ref = this;
+          var str="jobId="+jobId;
+
+          $.ajax({
+            type: "GET",
+            data: str,
+            url: 'controller/savejob.php',
+            cache: false,
+            success: function(response) {
+              if(response == -1) {
+                alert("Please Log In");
+              }
+              else {
+                $(this_ref).html(response).wrapInner('<span class="btn btn-success">Remove</span>');
+                $(this_ref).removeClass("saveJob").addClass("removeJob");
+                $(this_ref).$('#applied').load('viewjob.php #applied');
+              }
+            }
+          });
+
+        });
+        $(document).on("click",".removeJob",function(){
+          var jobId = $(this).attr('id');
+          var this_ref = this;
+          var str="jobId="+jobId;
+
+          $.ajax({
+            type: "GET",
+            data: str,
+            url: 'controller/removejob.php',
+            cache: false,
+            success: function(response) {
+              if(response == -1) {
+                alert("Please Log In");
+              }
+              else {
+                $(this_ref).html(response).wrapInner('<span class="btn btn-warning">Save</span>');
+                $(this_ref).removeClass("removeJob").addClass("saveJob");
+                $(this_ref).$('#applied').load('viewjob.php #applied');
+              }
+            }
+          });
+
+        });
+        </script>
+        <!-- //TODO: write the script for Save and Un-Save of jobs -->

@@ -112,7 +112,7 @@ else {
           </ul><br/><br/><br/>
           <h4 class="widget-title">Jobs and Applications</h4>
           <ul class="sidebar-list">
-            <li><a href="">Saved Jobs</a></li>
+            <li><a href="savedjobs.php">Saved Jobs</a></li>
             <li><a href="">Application History</a></li>
           </ul><br/><br/><br/>
           <h4 class="widget-title">Settings</h4>

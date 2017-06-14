@@ -44,8 +44,6 @@ else {
 </section>
 <!-- =============== End of Page Header 1 Section =============== -->
 
-
-
 <!-- ===== Start of Blog Listing Section ===== -->
 <section class="blog-listing ptb80" id="version1">
   <div class="container">
@@ -108,12 +106,6 @@ else {
       <!-- Start of Blog Sidebar -->
       <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
-
-
-        <!-- Start of Social Media -->
-
-
-
         <!-- Start of Categories -->
         <div class="col-md-12 mt40">
           <h4 class="widget-title">My Profile</h4>
@@ -129,7 +121,7 @@ else {
           </ul><br/><br/><br/>
           <h4 class="widget-title">Jobs and Applications</h4>
           <ul class="sidebar-list">
-            <li><a href="">Saved Jobs</a></li>
+            <li><a href="savedjobs.php">Saved Jobs</a></li>
             <li><a href="">Application History</a></li>
           </ul><br/><br/><br/>
           <h4 class="widget-title">Settings</h4>
@@ -140,7 +132,6 @@ else {
         </div>ul>
       </div>
       <!-- End of Categories -->
-
 
     </div>
     <!-- End of Blog Sidebar -->
