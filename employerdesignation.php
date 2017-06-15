@@ -17,6 +17,8 @@ else {
 
 <?php include "header.php";?>
 
+<!--//TODO: Add multiple forms through scripts -->
+
 
 <!-- =============== Start of Page Header 1 Section =============== -->
 <section class="page-header">
@@ -90,11 +92,6 @@ else {
 
               </div>
 
-              <!-- Form Group -->
-              <!-- <div class="form-group pt30 nomargin">
-                <button class="btn btn-blue btn-effect">Add Another</button>
-              </div> -->
-
             </div>
           </div>
           <button class="btn btn-blue btn-effect add_field_button">Add Another</button>
@@ -144,23 +141,3 @@ else {
 <!-- ===== End of Blog Listing Section ===== -->
 
 <?php include "footer.php";?>
-<script>/*
-$(document).ready(function() {
-    var max_fields      = 10; //maximum input boxes allowed
-    var wrapper         = $(".row"); //Fields wrapper
-    var add_button      = $(".add_field_button"); //Add button ID
-
-    var x = 1; //initlal text box count
-    $(add_button).click(function(e){ //on add input button click
-        e.preventDefault();
-        if(x < max_fields){ //max input box allowed
-            x++; //text box increment
-            $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
-        }
-    });
-
-    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parent('div').remove(); x--;
-    })
-});*/
-</script>

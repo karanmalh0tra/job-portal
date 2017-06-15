@@ -23,6 +23,78 @@ else {
 <?php include "header.php";?>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  jQuery.noConflict()(function(){
+    $("#jobform").validate({
+      rules: {
+        jobtitle: {
+          required: true
+        },
+        jobdescription: {
+          required: true
+        },
+        jobexperience: {
+          required: true
+        },
+        jobskills: {
+          required: true
+        },
+        jobsalary: {
+          required: true
+        },
+        joblocation: {
+          required: true
+        },
+        jobindustry: {
+          required: true
+        },
+        jobfunctionalarea: {
+          required: true
+        }
+      },
+      messages: {
+        jobtitle: {
+          required: "Enter a Job Title"
+        },
+        jobdescription: {
+          required: "Tell us something about the job"
+        },
+        jobexperience: {
+          required: "select the experience you require for this job"
+        },
+        jobskills: {
+          required: "Enter the skills you require for this job"
+        },
+        jobsalary: {
+          required: "Enter the salary to be paid for this job"
+        },
+        joblocation: {
+          required: "Enter the job location"
+        },
+        jobindustry: {
+          required: "Enter the indudstry under which this job belongs"
+        },
+        jobfunctionalarea: {
+          required: "Enter the functional area under which this job belongs"
+        }
+      }
+    });
+  });
+});
+</script>
+
+<style>
+
+#jobform label.error, #jobform input.submit {
+
+  color:red;
+}
+</style>
+
 
 <!-- =============== Start of Page Header 1 Section =============== -->
 <section class="page-header">
@@ -84,7 +156,8 @@ else {
           <div class="form-group">
             <label>Experience Required</label>
             <select class="form-control" name="jobexperience" id="jobdexperience">
-              <<option value="" selected>Select Years</option>
+              <option value="" selected>Select Years</option>
+              <option value="0" <?php print($view_job['job_work_experience']=="0" ?'selected="selected"': "") ?>>Fresher</option>
               <option value="1" <?php print($view_job['job_work_experience']=="1" ?'selected="selected"': "") ?>>1</option>
               <option value="2" <?php print($view_job['job_work_experience']=="2" ?'selected="selected"': "") ?>>2</option>
               <option value="3" <?php print($view_job['job_work_experience']=="3" ?'selected="selected"': "") ?>>3</option>
@@ -115,34 +188,33 @@ else {
 
           <!-- Form Group -->
           <div class="form-group">
-              <label>industry</label>
-              <select id="jobindustry" class="form-control" name="jobindustry">
-                <option value="">Select Industry</option><?php
-                foreach($view_industry as $industry)
-                {
-                  ?>
-                  <option value="<?php echo $industry['industry_id']; ?>" <?php print($view_job['industry_id']==$industry['industry_id'] ?'selected="selected"': "") ?>>
-                    <?php echo $industry['industry_name']; ?></option>
-                  <?php
-                }
+            <label>industry</label>
+            <select id="jobindustry" class="form-control" name="jobindustry">
+              <option value="">Select Industry</option>
+              <?php
+              foreach($view_industry as $industry)
+              {
                 ?>
-              </select>
+                <option value="<?php echo $industry['industry_id']; ?>" <?php print($view_job['industry_id']==$industry['industry_id'] ?'selected="selected"': "") ?>><?php echo $industry['industry_name']; ?></option>
+                <?php
+              }
+              ?>
+            </select>
           </div>
 
           <!-- Form Group -->
           <div class="form-group">
-              <label>functional area</label>
-              <select class="form-control" name="jobfunctionalarea" id="jobfunctionalarea">
-                <option value="">Select Functional Area</option><?php
-                foreach($view_functionalarea as $functionalarea)
-                {
-                  ?>
-                  <option value="<?php echo $functionalarea['functionalarea_id']; ?>" <?php print($view_job['functionalarea_id']==$functionalarea['functionalarea_id'] ?'selected="selected"': "") ?>>
-                    <?php echo $functionalarea['functionalarea_name']; ?></option>
-                  <?php
-                }
+            <label>functional area</label>
+            <select class="form-control" name="jobfunctionalarea" id="jobfunctionalarea">
+              <option value="">Select Functional Area</option><?php
+              foreach($view_functionalarea as $functionalarea)
+              {
                 ?>
-              </select>
+                <option value="<?php echo $functionalarea['functionalarea_id']; ?>" <?php print($view_job['functionalarea_id']==$functionalarea['functionalarea_id'] ?'selected="selected"': "") ?>><?php echo $functionalarea['functionalarea_name']; ?></option>
+                <?php
+              }
+              ?>
+            </select>
           </div>
 
           <!-- Form Group -->
@@ -152,54 +224,54 @@ else {
 
         </form>
 
-    </div>
-    <!-- End of Blog Posts -->
+      </div>
+      <!-- End of Blog Posts -->
 
 
-    <!-- Start of Blog Sidebar -->
-    <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
-
-
-
-      <!-- Start of Social Media -->
+      <!-- Start of Blog Sidebar -->
+      <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
 
 
-      <!-- Start of Categories -->
-      <div class="col-md-12 mt40">
-        <h4 class="widget-title">Company Profile</h4>
-        <ul class="sidebar-list">
-          <li><a href="">Company Profile</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Jobs</h4>
-        <ul class="sidebar-list">
-          <li><a href="postedjobs.php">Posted Jobs</a></li>
-          <li><a href="">Package Details</a></li>
-          <li><a href="">Resume Search</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Manage Jobs</h4>
-        <ul class="sidebar-list">
-          <li><a href="postjob.php">Post a Job</a></li>
-          <li><a href="modifyjob.php">Modify Jobs</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Manage Applications</h4>
-        <ul class="sidebar-list">
-          <li><a href="viewapplications.php">View Applications</a></li>
-          <li><a href="">View Candidate Profile</a></li>
-          <li><a href="">Reply Candidate via Email</a></li>
-          <li><a href="">Save Profile</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Saved Profiles</h4>
-        <ul class="sidebar-list">
-          <li><a href="viewshortlisted.php">View Candidate &amp; Profile</a></li>
-          <li><a href="">Reply Candidate via Email</a></li>
-          <li><a href="">Remove from Saved Listing</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Account Settings</h4>
-        <ul class="sidebar-list">
-          <li><a href="editcompanyprofile.php">Edit Profile</a></li>
-          <li><a href="changecompanypassword.php">Change Password</a></li>
-        </ul>
+        <!-- Start of Social Media -->
+
+
+
+        <!-- Start of Categories -->
+        <div class="col-md-12 mt40">
+          <h4 class="widget-title">Company Profile</h4>
+          <ul class="sidebar-list">
+            <li><a href="">Company Profile</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Jobs</h4>
+          <ul class="sidebar-list">
+            <li><a href="postedjobs.php">Posted Jobs</a></li>
+            <li><a href="">Package Details</a></li>
+            <li><a href="">Resume Search</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Manage Jobs</h4>
+          <ul class="sidebar-list">
+            <li><a href="postjob.php">Post a Job</a></li>
+            <li><a href="modifyjob.php">Modify Jobs</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Manage Applications</h4>
+          <ul class="sidebar-list">
+            <li><a href="viewapplications.php">View Applications</a></li>
+            <li><a href="">View Candidate Profile</a></li>
+            <li><a href="">Reply Candidate via Email</a></li>
+            <li><a href="">Save Profile</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Saved Profiles</h4>
+          <ul class="sidebar-list">
+            <li><a href="viewshortlisted.php">View Candidate &amp; Profile</a></li>
+            <li><a href="">Reply Candidate via Email</a></li>
+            <li><a href="">Remove from Saved Listing</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Account Settings</h4>
+          <ul class="sidebar-list">
+            <li><a href="editcompanyprofile.php">Edit Profile</a></li>
+            <li><a href="changecompanypassword.php">Change Password</a></li>
+          </ul>
         </ul><br/><br/><br/>
         <h4 class="widget-title">Buy Package</h4>
         <ul class="sidebar-list">
@@ -211,10 +283,10 @@ else {
       <!-- End of Categories -->
 
 
-  </div>
-  <!-- End of Blog Sidebar -->
+    </div>
+    <!-- End of Blog Sidebar -->
 
-</div>
+  </div>
 </div>
 </section>
 <!-- ===== End of Blog Listing Section ===== -->

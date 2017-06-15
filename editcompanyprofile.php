@@ -17,6 +17,54 @@ else {
 <?php include "header.php";?>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  jQuery.noConflict()(function(){
+    $("#mycompanyform").validate({
+      rules: {
+        company_name: {
+          required: true
+        },
+        company_about: {
+          required: true
+        },
+        company_address: {
+          required: true
+        },
+        location: {
+          required: true
+        }
+      },
+      messages: {
+        company_name: {
+          required: "Please enter Company Name"
+        },
+        company_about: {
+          required: "tell us something about the Company"
+        },
+        company_address: {
+          required: "Please enter the address of the Company"
+        },
+        location: {
+          required: "Please enter the location of your company"
+        }
+      }
+    });
+    });
+    });
+    </script>
+
+    <style>
+
+    #mycompanyform label.error, #mycompanyform input.submit {
+
+      color:red;
+    }
+    </style>
+
 
 <!-- =============== Start of Page Header 1 Section =============== -->
 <section class="page-header">

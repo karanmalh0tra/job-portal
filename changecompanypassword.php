@@ -17,6 +17,55 @@ else {
 
 <?php include "header.php";?>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  jQuery.noConflict()(function(){
+    $("#changecompanypasswordform").validate({
+      rules: {
+        oldPassword: {
+          required: true,
+          minlength: 6
+        },
+        newPassword: {
+          required: true,
+          minlength: 6
+
+        },
+        ConfirmNewPassword: {
+          required: true,
+          minlength: 6
+        }
+      },
+      messages: {
+        oldPassword: {
+          required: "Please enter your password",
+          minlength: "Enter a password of minimum length 6"
+        },
+        newPassword: {
+          required: "Please enter your new password",
+          minlength: "Enter a password of minimum length 6"
+        },
+        ConfirmNewPassword: {
+          required: "Please enter your new password again",
+          minlength: "Enter a password of minimum length 6"
+        }
+      }
+    });
+    });
+    });
+    </script>
+
+    <style>
+
+    #changecompanypasswordform label.error, #changecompanypasswordform input.submit {
+
+      color:red;
+    }
+    </style>
+
 
 <!-- =============== Start of Page Header 1 Section =============== -->
 <section class="page-header">

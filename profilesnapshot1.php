@@ -18,54 +18,120 @@ else {
 
 <?php include "header.php";?>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
-<!-- // TODO: Jquery validation conflict -->
+
 <script>
-jQuery.noConflict();
-jQuery(document).ready(function(){
-  jQuery("div").hide();
-  jQuery("#myform").validate({
-    rules: {
-      name: "required",
-      location: "required",
-      industry: "required",
-      functionalarea: "required",
-      role: "required",
-      gender: "required",
-      maritalStatus: "required",
-      email: {
-        required: true,
-        email: true
+$(document).ready(function(){
+  jQuery.noConflict()(function(){
+    $("#myform").validate({
+      rules: {
+        name: {
+          required: true
+        },
+        date_of_birth: {
+          required: true
+        },
+        resume_headline: {
+          required: true
+        },
+        experience: {
+          required: true
+        },
+        location: {
+          required: true
+        },
+        industry: {
+          required: true
+        },
+        mobile: {
+          required: true,
+          digits: true,
+          minlength: 10,
+          maxlength: 10
+        },
+        functionalarea: {
+          required: true
+        },
+        role: {
+          required: true
+        },
+        user_key_skills: {
+          required: true
+        },
+        address: {
+          required: true
+        },
+        hometown: {
+          required: true
+        },
+        pincode: {
+          required: true,
+          minlength: 6,
+          maxlength: 6
+        },
+        gender: {
+          required: true
+        },
+        maritalStatus: {
+          required: true
+        }
       },
-      mobile: {
-        required: true,
-        minlength: 10,
-        maxlength: 10,
-        digits: true
+      messages: {
+        name: {
+          required: "Enter your name"
+        },
+        date_of_birth: {
+          required: "Enter your date of birth"
+        },
+        resume_headline: {
+          required: "Enter your Resume Headline"
+        },
+        experience: {
+          required: "Enter your work experience"
+        },
+        location: {
+          required: "Enter your location"
+        },
+        industry: {
+          required: "Enter the Industry where you work"
+        },
+        mobile: {
+          required: "Enter your mobile number",
+          digits: "Please only enter numbers",
+          minlength: "Enter your 10 digit mobile number",
+          maxlength: "Enter your 10 digit mobile number"
+        },
+        functionalarea: {
+          required: "Enter your functional area"
+        },
+        role: {
+          required: "Enter your role"
+        },
+        user_key_skills: {
+          required: "Tell us about your skillset"
+        },
+        address: {
+          required: "Please Enter your address"
+        },
+        hometown: {
+          required: "Please enter your hometown"
+        },
+        pincode: {
+          required: "Enter the pincode",
+          minlength: "Give the 6 digits pincode",
+          maxlength: "Give the 6 digits pincode"
+        },
+        gender: {
+          required: "Enter your gender"
+        },
+        maritalStatus: {
+          required: "Tell us about your Marital Status"
+        }
       }
-    },
-    messages: {
-      name: "Enter your name",
-      location: "Please select a location",
-      industry: "Please select an industry",
-      functionalarea: "Please select a functional area",
-      role: "Please select a role",
-      gender: "Please select a gender",
-      maritalStatus: "Please select your Marital Status",
-      email: {
-        required: "Please enter your email ID",
-        email: "Please enter a valid email address"
-      },
-      mobile: {
-        required: "Please enter your mobile number",
-        minlength: "Please Enter a 10 digit mobile number",
-        maxlength: "Please Enter a 10 digit mobile number",
-        digits: "Please only enter numbers"
-      }
-    }
+    });
   });
-});
 });
 </script>
 
@@ -105,9 +171,6 @@ jQuery(document).ready(function(){
 <!-- =============== End of Page Header 1 Section =============== -->
 
 
-
-
-
 <!-- ===== Start of Blog Listing Section ===== -->
 <section class="blog-listing ptb80" id="version1">
   <div class="container">
@@ -145,8 +208,8 @@ jQuery(document).ready(function(){
               <!-- Form Group -->
               <div class="form-group">
                 <label>total experience</label>
-                <select name="experience" id="experience" onchange="" class="form-control" size="1">
-                  <option value="--" selected>Experience</option>
+                <select name="experience" id="experience" class="form-control" size="1">
+                  <option value="" selected>Experience</option>
                   <option value="00" <?php print($view_user['user_experience']=="0" ?'selected="selected"': "") ?>>Fresher</option>
                   <option value="01" <?php print($view_user['user_experience']=="01" ?'selected="selected"': "") ?>>01</option>
                   <option value="02" <?php print($view_user['user_experience']=="02" ?'selected="selected"': "") ?>>02</option>
@@ -212,7 +275,7 @@ jQuery(document).ready(function(){
                 <!-- Form Group -->
                 <div class="form-group">
                   <label>email</label>
-                  <input id="email" class="form-control" type="email" name="email" value="<?php echo $view_user['user_email']; ?>" required>
+                  <h6 style="font-weight:bold;"><?php echo $view_user['user_email']; ?></h6>
                 </div>
 
                 <!-- Form Group -->
@@ -280,7 +343,8 @@ jQuery(document).ready(function(){
                 <div class="form-group">
                   <label>marital status</label>
                   <select id="maritalStatus" class="form-control" name="maritalStatus">
-                    <option value="-1">Select</option> <option value="N"  <?php print($view_user['marital_status']=="N" ?'selected="selected"': "") ?>>Single/unmarried</option>
+                    <option value="" selected>Select</option>
+                    <option value="N"  <?php print($view_user['marital_status']=="N" ?'selected="selected"': "") ?>>Single/unmarried</option>
                     <option value="M" <?php print($view_user['marital_status']=="M" ?'selected="selected"': "") ?>>Married</option>
                     <option value="W" <?php print($view_user['marital_status']=="W" ?'selected="selected"': "") ?>>Widowed</option>
                     <option value="D" <?php print($view_user['marital_status']=="D" ?'selected="selected"': "") ?>>Divorced</option>
@@ -328,9 +392,7 @@ jQuery(document).ready(function(){
         <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
 
-
           <!-- Start of Social Media -->
-
 
 
           <!-- Start of Categories -->

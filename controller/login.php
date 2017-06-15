@@ -12,7 +12,7 @@ $success = $userService->authenticateUser($email,$password);
   }
   else {
     echo "<script>alert('Invalid User Login..')</script>";
-  	echo "<script>window.open('../index.php','_self')</script>";
+  	echo "<script>window.open('../login.php','_self')</script>";
   }
 
 

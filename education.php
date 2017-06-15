@@ -19,60 +19,51 @@ else {
 
 <?php include "header.php";?>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
-<!-- // TODO: Jquery validation conflict -->
+
 <script>
-jQuery.noConflict();
-jQuery(document).ready(function(){
-  jQuery("div").hide();
-  jQuery("#myform").validate({
-    rules: {
-      name: "required",
-      location: "required",
-      industry: "required",
-      functionalarea: "required",
-      role: "required",
-      gender: "required",
-      maritalStatus: "required",
-      email: {
-        required: true,
-        email: true
+$(document).ready(function(){
+  jQuery.noConflict()(function(){
+    $("#myeducationform").validate({
+      rules: {
+        oldPassword: {
+          required: true,
+          minlength: 6
+        },
+        newPassword: {
+          required: true,
+          minlength: 6
+
+        },
+        ConfirmNewPassword: {
+          required: true,
+          minlength: 6
+        }
       },
-      mobile: {
-        required: true,
-        minlength: 10,
-        maxlength: 10,
-        digits: true
+      messages: {
+        oldPassword: {
+          required: "Please enter your password",
+          minlength: "Enter a password of minimum length 6"
+        },
+        newPassword: {
+          required: "Please enter your new password",
+          minlength: "Enter a password of minimum length 6"
+        },
+        ConfirmNewPassword: {
+          required: "Please enter your new password again",
+          minlength: "Enter a password of minimum length 6"
+        }
       }
-    },
-    messages: {
-      name: "Enter your name",
-      location: "Please select a location",
-      industry: "Please select an industry",
-      functionalarea: "Please select a functional area",
-      role: "Please select a role",
-      gender: "Please select a gender",
-      maritalStatus: "Please select your Marital Status",
-      email: {
-        required: "Please enter your email ID",
-        email: "Please enter a valid email address"
-      },
-      mobile: {
-        required: "Please enter your mobile number",
-        minlength: "Please Enter a 10 digit mobile number",
-        maxlength: "Please Enter a 10 digit mobile number",
-        digits: "Please only enter numbers"
-      }
-    }
+    });
   });
-});
 });
 </script>
 
 <style>
 
-#myform label.error, #myform input.submit {
+#myeducationform label.error, #myeducationform input.submit {
 
   color:red;
 }
@@ -104,9 +95,6 @@ jQuery(document).ready(function(){
   </div>
 </section>
 <!-- =============== End of Page Header 1 Section =============== -->
-
-
-
 
 
 <!-- ===== Start of Blog Listing Section ===== -->
@@ -291,9 +279,7 @@ jQuery(document).ready(function(){
           <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
 
-
             <!-- Start of Social Media -->
-
 
 
             <!-- Start of Categories -->
@@ -322,7 +308,6 @@ jQuery(document).ready(function(){
             </div>
             <!-- End of Categories -->
 
-
           </div>
           <!-- End of Blog Sidebar -->
 
@@ -330,8 +315,6 @@ jQuery(document).ready(function(){
       </div>
     </section>
     <!-- ===== End of Blog Listing Section ===== -->
-
-
 
 
     <?php include "footer.php";?>
