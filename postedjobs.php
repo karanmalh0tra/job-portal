@@ -11,12 +11,12 @@ else {
   $companyService = new CompanyService();
   $view_company = $companyService->viewCompany($companyId);
   $view_jobs_from_company = $companyService->viewJobFromCompany($companyId);
+  $appnotif = $companyService->viewCompanyNotification($_SESSION['company_id']);
 }
 
 ?>
 
 <?php include "header.php";?>
-
 
 
 <!-- =============== Start of Page Header 1 Section =============== -->
@@ -59,7 +59,6 @@ else {
         <article class="col-md-12 blog-post">
 
 
-
           <!-- Blog Post Description -->
           <div class="col-md-8 blog-desc">
             <h5><a href="blog-post-right-sidebar.html"><?php echo $viewjobs['job_title']; ?></a></h5>
@@ -95,9 +94,7 @@ else {
       <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
 
-
         <!-- Start of Social Media -->
-
 
 
         <!-- Start of Categories -->
@@ -119,7 +116,7 @@ else {
           </ul><br/><br/><br/>
           <h4 class="widget-title">Manage Applications</h4>
           <ul class="sidebar-list">
-            <li><a href="viewapplications.php">View Applications</a></li>
+            <li><a href="viewapplications.php">View Applications <?php echo $appnotif['count'];?></a></li>
             <li><a href="">View Candidate Profile</a></li>
             <li><a href="">Reply Candidate via Email</a></li>
             <li><a href="">Save Profile</a></li>

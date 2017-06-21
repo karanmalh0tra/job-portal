@@ -70,7 +70,7 @@ else {
             <br/>
             <p><h6>Resume Headline:</h6> <?php echo $view_user['resume_headline']; ?></p>
             <ul style="padding-left:0;">
-              <li><h6>Profile Image</h6><span><img class="form-control" src="<?php echo $view_user['imagepath']; ?>"></span></li>
+              <li><h6>Profile Image</h6><span><img  src="<?php echo $view_user['imagepath']; ?>" style="height: 300px; width: 200px;"></span></li>
               <li><h6>Current Location:</h6><span><?php echo $view_user['user_location']; ?></span></li>
               <li><h6>Functional Area:</h6><span><?php //echo $view_user['resume_headline']; ?></span></li>
               <li><h6>Role:</h6><span><?php //echo $view_user['resume_headline']; ?></span></li>

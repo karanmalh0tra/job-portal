@@ -19,11 +19,27 @@ $view_all_jobs = $companyService->viewJob();
 
       <div class="col-md-6 col-xs-12">
         <h3><?php echo $view_job['job_title']; ?></h3>
-        <a href="#" class="btn btn-green btn-small btn-effect mt15">full time</a>
+        <!--<a href="#" class="btn btn-green btn-small btn-effect mt15">full time</a>-->
       </div>
 
       <div class="col-md-6 col-xs-12 clearfix">
-        <a href="#" class="btn btn-blue btn-effect pull-right mt15"><i class="fa fa-star"></i>add to favorites</a>
+        <?php
+        if(!empty($_SESSION['user_id'])) {
+          $saved_job = $companyService->savedJobs($_SESSION['user_id'],$view_job['job_id']);
+        if($saved_job['status']=="saved")
+        { ?>
+          <a class="removeJob pull-right" id="<?php echo $view_job['job_id']; ?>">
+            <span class='btn btn-success'>Remove</span>
+          </a>
+          <?php }
+          elseif($saved_job['status']=="unsaved" || empty($saved_job['status'])) { ?>
+            <a class="saveJob btn btn-blue btn-effect pull-right mt15" id="<?php echo $view_job['job_id']; ?>">
+
+              <i class="fa fa-star"></i>add to favorites
+            </a>
+            <?php } } else { ?>
+        <a href="#" class="saveJob btn btn-blue btn-effect pull-right mt15"><i class="fa fa-star" id="<?php echo $view_job['job_id']; ?>"></i>add to favorites</a>
+        <?php } ?>
       </div>
 
 
@@ -65,7 +81,6 @@ $view_all_jobs = $companyService->viewJob();
             <div class="job-company-info mt30">
               <h3 class="capitalize"><?php
               $view_company = $companyService->viewCompanyById($view_job['company_id']);
-              // $companyname = $view_company['company_name'];
               echo $view_company['company_name'];
               ?></h3>
 
@@ -109,34 +124,12 @@ $view_all_jobs = $companyService->viewJob();
 
             </div>
 
-            <!-- Div wrapper -->
-            <div class="pt40">
-              <h5 class="mt40">We Offer</h5>
-
-              <!-- Start of List -->
-              <ul class="list mt20">
-                <li>An exciting job where you can assume responsibility and develop professionally.</li>
-
-                <li>A dynamic team with friendly, highly-qualified colleagues from all over the world.</li>
-
-                <li>Strong, sustainable growth and fresh challenges every day.</li>
-
-                <li>Flat hierarchies and short decision paths.</li>
-              </ul>
-              <!-- End of List -->
-
-              <p class="mt40">If you feel that this is the place where you belong and start your career with a ton of new opportunities, please don't hasitate to apply for the job position.</p>
-            </div>
-
           </div>
         </div>
         <!-- End of Job Details -->
 
       </div>
       <!-- ===== End of Job Details ===== -->
-
-
-
 
 
       <!-- ===== Start of Job Sidebar ===== -->
@@ -186,7 +179,12 @@ $view_all_jobs = $companyService->viewJob();
           <ul class="job-overview nopadding mt40">
             <li>
               <h5><i class="fa fa-calendar"></i> Date Posted:</h5>
-              <span>Posted 1 year ago</span>
+              <?php $timestamp = $view_job['timestamp'];
+              $datetime = explode(" ",$timestamp);
+              $date = $datetime[0];
+              $reformatted_date = date('d-m-Y',strtotime($date));
+              $time = $datetime[1]; ?>
+              <span>Posted on <?php echo $reformatted_date; ?></span>
             </li>
 
             <li>
@@ -200,63 +198,149 @@ $view_all_jobs = $companyService->viewJob();
             </li>
 
           </ul>
-
+          <!-- //TODO: apply for job -->
           <div class="mt20">
-            <a href="#" class="btn btn-blue btn-effect">apply for job</a>
+            <?php
+            if(!empty($_SESSION['user_id'])) {
+              $applied_job = $companyService->appliedJobs($_SESSION['user_id'],$view_job['job_id']);
+
+              if(!empty($applied_job['status'])){ ?>
+                <span class='btn btn-success'> applied </span>
+                <?php }
+                else { ?>
+                  <a href="#" class="jobStatus" id="<?php echo $view_job['job_id']; ?>">
+                    <span class='btn btn-warning'>apply for job</span>
+                  </a>
+                  <?php } }else { ?>
+                    <a href="#" class="jobStatus" id="<?php echo $view_job['job_id']; ?>">
+                      <span class='btn btn-warning'>apply for job</span>
+                    </a>
+                  <?php }?>
+                </div>
+
+              </div>
+              <!-- Start of Job Sidebar -->
+
+
+              <!-- Start of Google Map -->
+              <div class="col-md-12 gmaps mt60">
+                <div id="map"></div>
+              </div>
+              <!-- End of Google Map -->
+
+
+            </div>
+            <!-- ===== End of Job Sidebar ===== -->
+
           </div>
-
-        </div>
-        <!-- Start of Job Sidebar -->
+          <!-- End of Row -->
 
 
-        <!-- Start of Google Map -->
-        <div class="col-md-12 gmaps mt60">
-          <div id="map"></div>
-        </div>
-        <!-- End of Google Map -->
+          <!-- Start of Row -->
+          <div class="row mt80">
+            <div class="col-md-12">
+              <h2 class="capitalize pb40">related jobs</h2>
 
+              <!-- Start of Owl Slider -->
+              <div class="owl-carousel related-jobs">
+                <?php
+                foreach($view_all_jobs as $alljobs)
+                {
+                  ?>
+                  <!-- Start of Slide item 1 -->
+                  <div class="item">
+                    <a href="job-page.html">
+                      <h5><?php echo $alljobs['job_title']; ?></h5>
+                    </a>
+                    <a href="#" class="btn btn-green btn-small btn-effect mt15"><?php echo $alljobs['job_location']; ?></a>
 
-      </div>
-      <!-- ===== End of Job Sidebar ===== -->
+                    <h5 class="pt40 pb10"><i class="fa fa-money"></i> Salary:</h5>
+                    <h5><?php echo $alljobs['job_salary']; ?></h5>
+                  </div>
+                  <?php } ?>
+                  <!-- End of Slide item 1 -->
 
-    </div>
-    <!-- End of Row -->
+                </div>
+                <!-- End of Owl Slider -->
+              </div>
+            </div>
+            <!-- End of Row -->
 
-
-    <!-- Start of Row -->
-    <div class="row mt80">
-      <div class="col-md-12">
-        <h2 class="capitalize pb40">related jobs</h2>
-
-        <!-- Start of Owl Slider -->
-        <div class="owl-carousel related-jobs">
-          <?php
-          foreach($view_all_jobs as $alljobs)
-          {
-           ?>
-          <!-- Start of Slide item 1 -->
-          <div class="item">
-            <a href="job-page.html">
-              <h5><?php echo $alljobs['job_title']; ?></h5>
-            </a>
-            <a href="#" class="btn btn-green btn-small btn-effect mt15"><?php echo $alljobs['job_location']; ?></a>
-
-            <h5 class="pt40 pb10"><i class="fa fa-money"></i> Salary:</h5>
-            <h5><?php echo $alljobs['job_salary']; ?></h5>
           </div>
-          <?php } ?>
-          <!-- End of Slide item 1 -->
-
-        </div>
-        <!-- End of Owl Slider -->
-      </div>
-    </div>
-    <!-- End of Row -->
-
-  </div>
-</section>
-<!-- ===== End of Main Wrapper Job Section ===== -->
+        </section>
+        <!-- ===== End of Main Wrapper Job Section ===== -->
 
 
+        <?php include "footer.php";?>
+        <script>
+        $(document).on("click",".jobStatus",function(){
+          var jobId = $(this).attr('id');
+          var this_ref = this;
+          var str="jobId="+jobId;
 
-<?php include "footer.php";?>
+          $.ajax({
+            type: "GET",
+            data: str,
+            url: 'controller/applyforjob.php',
+            cache: false,
+            success: function(response) {
+              if(response == -1) {
+                alert("Please Log In");
+              }
+              else {
+                $(this_ref).html(response).wrapInner('<span class="btn btn-success">applied</span>');
+                $(this_ref).removeClass("jobStatus");
+                $(this_ref).$('#applied').load('viewjob.php #applied');
+              }
+            }
+          });
+
+        });
+
+        $(document).on("click",".saveJob",function(){
+          var jobId = $(this).attr('id');
+          var this_ref = this;
+          var str="jobId="+jobId;
+
+          $.ajax({
+            type: "GET",
+            data: str,
+            url: 'controller/savejob.php',
+            cache: false,
+            success: function(response) {
+              if(response == -1) {
+                alert("Please Log In");
+              }
+              else {
+                $(this_ref).html(response).wrapInner('<span class="btn btn-success">Remove</span>');
+                $(this_ref).removeClass("saveJob").addClass("removeJob");
+                $(this_ref).$('#applied').load('viewjob.php #applied');
+              }
+            }
+          });
+
+        });
+        $(document).on("click",".removeJob",function(){
+          var jobId = $(this).attr('id');
+          var this_ref = this;
+          var str="jobId="+jobId;
+
+          $.ajax({
+            type: "GET",
+            data: str,
+            url: 'controller/removejob.php',
+            cache: false,
+            success: function(response) {
+              if(response == -1) {
+                alert("Please Log In");
+              }
+              else {
+                $(this_ref).html(response).wrapInner('<i class="fa fa-star"></i>add to favorites');
+                $(this_ref).removeClass("removeJob").addClass("saveJob");
+                $(this_ref).$('#applied').load('viewjob.php #applied');
+              }
+            }
+          });
+
+        });
+        </script>

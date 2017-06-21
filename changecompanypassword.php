@@ -11,6 +11,7 @@ else {
   $companyService = new CompanyService();
   $view_company = $companyService->viewCompany($companyId);
   $view_jobs_from_company = $companyService->viewJobFromCompany($companyId);
+  $appnotif = $companyService->viewCompanyNotification($_SESSION['company_id']);
 }
 
 ?>
@@ -94,9 +95,6 @@ $(document).ready(function(){
 <!-- =============== End of Page Header 1 Section =============== -->
 
 
-
-
-
 <!-- ===== Start of Blog Listing Section ===== -->
 <section class="blog-listing ptb80" id="version1">
   <div class="container">
@@ -107,9 +105,6 @@ $(document).ready(function(){
 
 
         <!-- ===== Start of Login - Register Section ===== -->
-
-
-
 
 
         <!-- Start of Login Box -->
@@ -160,8 +155,6 @@ $(document).ready(function(){
               <!-- End of Login Box -->
 
 
-
-
               <!-- ===== End of Login - Register Section ===== -->
 
             </div>
@@ -172,9 +165,7 @@ $(document).ready(function(){
             <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
 
-
               <!-- Start of Social Media -->
-
 
 
               <!-- Start of Categories -->
@@ -198,7 +189,7 @@ $(document).ready(function(){
                 </ul><br/><br/><br/>
                 <h4 class="widget-title">Manage Applications</h4>
                 <ul class="sidebar-list">
-                  <li><a href="">View Applications</a></li>
+                  <li><a href="viewapplications.php">View Applications <?php echo $appnotif['count'];?></a></li>
                   <li><a href="">View Candidate Profile</a></li>
                   <li><a href="">Reply Candidate via Email</a></li>
                   <li><a href="">Save Profile</a></li>

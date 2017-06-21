@@ -122,6 +122,35 @@ class UserService extends MySql
 		return $data;
 	}
 
+	function addRole($post)
+	{
+		$this->beginTransaction($post);
+		try {
+			$functionalarea_id = $post['functionalarea_id'];
+			$role_name = $post['role_name'];
+			$query = "INSERT INTO specialization (specialization_name, graduation_id)
+								VALUES ('".$role_name."', '".$functionalarea_id."')";
+			$data = $this->ExecuteQuery($query,"insert");
+			$this->commitTransaction();
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function viewGraduation()
+	{
+		$this->beginTransaction();
+		try {
+			$query = "SELECT * FROM graduation";
+			$data = $this->ExecuteQuery($query,"select");
+			$this->commitTransaction();
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
 
 	function viewIndustry()
 	{
@@ -134,6 +163,23 @@ class UserService extends MySql
 			$this->rollbackTransaction();
 		}
 		return $data;
+	}
+
+	function viewIndustryById($industryId)
+	{
+		$view;
+		$this->beginTransaction();
+		try {
+			$query = "SELECT * FROM industry where industry_id = '".$industryId."'";
+			$data = $this->ExecuteQuery($query,"select");
+			if(!empty($data)){
+				$view = $data[0];
+				$this->commitTransaction();
+				return $view;
+			}
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
 	}
 
 	function viewFunctionalArea()
@@ -163,6 +209,22 @@ class UserService extends MySql
 		}
 		return $data;
 	}
+
+	function viewSpecialization($graduationId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+
+			$query="SELECT * FROM specialization WHERE graduation_id = '".$graduationId."'";
+			$data = $this->ExecuteQuery($query,"select");
+			$this->commitTransaction();
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
 
 	function viewRoleByFunctionalAreaId($functionalAreaId)
 	{
@@ -206,6 +268,7 @@ class UserService extends MySql
 			$user_location = mysql_real_escape_string($post['location']);
 			$industry_id = $post['industry'];
 			$functionalarea_id = $post['functionalarea'];
+			$role = $post['role'];
 			$user_key_skills1 = mysql_real_escape_string($post['user_key_skills']);
 			//$role_id= $post['role'];
 			//role_id='$role_id'
@@ -216,7 +279,7 @@ class UserService extends MySql
 			$pincode = $post['pincode'];
 			$marital_status = $post['maritalStatus'];
 			$query="update users set user_name='$user_name', date_of_birth='$date_of_birth', user_experience='$user_experience', resume_headline='$resume_headline', user_mobile='$user_mobile', user_gender='$user_gender',
-			user_location='$user_location', industry_id='$industry_id', functionalarea_id='$functionalarea_id',
+			user_location='$user_location', industry_id='$industry_id', functionalarea_id='$functionalarea_id', role_id='$role',
 			address='$address', hometown='$hometown', pincode='$pincode', marital_status='$marital_status', imagepath='$imagePath', resumepath='$resumePath', user_key_skills='$user_key_skills'
 			where user_id='".$userId."'";
 			$data = $this->ExecuteQuery($query,"update");
@@ -236,7 +299,7 @@ class UserService extends MySql
 			$specialization_id = $post['specialization'];
 			$university_name = $post['university'];
 			$university_year = $post['graduationyear'];
-			$grading_system - $post['gradingsystem'];
+			$grading_system = $post['gradingsystem'];
 			$universty_marks = $post['universitymarks'];
 			$x_board = $post['xboard'];
 			$x_year = $post['xyear'];
@@ -291,11 +354,11 @@ class UserService extends MySql
 		$data;
 		$this->beginTransaction();
 		try {
-			$employer_name = $post['employer_name'];
-			$start_date = $post['startdate'];
-			$end_date = $post['enddate'];
-			$user_designation = $post['user_designation'];
-			$job_profile = $post['job_profile'];
+			$employer_name = implode(", ",$post['employer_name']);
+			$start_date = implode(", ",$post['startdate']);
+			$end_date = implode(", ",$post['enddate']);
+			$user_designation = implode(", ",$post['user_designation']);
+			$job_profile = implode(", ",$post['job_profile']);
 			$query = "SELECT * from users_employers where user_id='".$userId."'";
 			$data=$this->ExecuteQuery($query,"select");
 			if(empty($data)){

@@ -10,6 +10,7 @@ else {
   require_once "class/company-service.php";
   $companyService = new CompanyService();
   $view_company = $companyService->viewCompany($companyId);
+  $appnotif = $companyService->viewCompanyNotification($_SESSION['company_id']);
 }
 
 ?>
@@ -121,7 +122,7 @@ else {
           </ul><br/><br/><br/>
           <h4 class="widget-title">Manage Applications</h4>
           <ul class="sidebar-list">
-            <li><a href="viewapplications.php">View Applications</a></li>
+            <li><a href="viewapplications.php">View Applications <?php echo $appnotif['count'];?></a></li>
             <li><a href="">View Candidate Profile</a></li>
             <li><a href="">Reply Candidate via Email</a></li>
             <li><a href="">Save Profile</a></li>

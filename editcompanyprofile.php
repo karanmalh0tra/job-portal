@@ -10,6 +10,7 @@ else {
   require_once "class/company-service.php";
   $companyService = new CompanyService();
   $view_company = $companyService->viewCompany($companyId);
+  $appnotif = $companyService->viewCompanyNotification($_SESSION['company_id']);
 }
 
 ?>
@@ -36,6 +37,15 @@ $(document).ready(function(){
         },
         location: {
           required: true
+        },
+        company_contact: {
+          required: true,
+          digits: true,
+          minlength: 10,
+          maxlength: 10
+        },
+        company_contact_person: {
+          required: true
         }
       },
       messages: {
@@ -50,20 +60,29 @@ $(document).ready(function(){
         },
         location: {
           required: "Please enter the location of your company"
+        },
+        company_contact: {
+          required: "Please enter company's contact number",
+          digits: "Please only enter numbers",
+          minlength: "Enter a 10 digit mobile number",
+          maxlength: "ENter a 10 digit mobile number"
+        },
+        company_contact_person: {
+          required: "Please enter your name"
         }
       }
     });
-    });
-    });
-    </script>
+  });
+});
+</script>
 
-    <style>
+<style>
 
-    #mycompanyform label.error, #mycompanyform input.submit {
+#mycompanyform label.error, #mycompanyform input.submit {
 
-      color:red;
-    }
-    </style>
+  color:red;
+}
+</style>
 
 
 <!-- =============== Start of Page Header 1 Section =============== -->
@@ -83,8 +102,6 @@ $(document).ready(function(){
       <div class="col-md-12">
         <ul class="breadcrumb">
           <li><a href="#">home</a></li>
-          <li class="active">blog</li>
-          <li class="active">blog - left sidebar</li>
         </ul>
       </div>
     </div>
@@ -137,78 +154,90 @@ $(document).ready(function(){
                 <input id="location" class="form-control" type="text" name="location" value="<?php echo $view_company['company_location']; ?>" required/>
               </div>
 
-            <!-- Form Group -->
-            <div class="form-group">
-              <label>company logo <span>(optional)</span></label>
-
-              <!-- Upload Button -->
-              <div class="upload-file-btn">
-                <span><i class="fa fa-upload"></i> Upload</span>
-                <input type="file" name="newimage" accept=".jpg,.png,.gif">
-                <input type="hidden" name="oldimage" value="<?php echo $view_company['imagepath']; ?>">
+              <!-- Form Group -->
+              <div class="form-group">
+                <label>Company Contact</label>
+                <input id="company_contact" class="form-control" type="text" name="company_contact" value="<?php echo $view_company['company_contact']; ?>" required/>
               </div>
-              <img class="form-control" src="<?php echo $view_user['imagepath']; ?>" alt="No Logo Uploaded">
-            </div>
 
-            <!-- Form Group -->
-            <div class="form-group pt30 nomargin">
-              <button type="submit" class="btn btn-blue btn-effect">submit</button>
-            </div>
+              <!-- Form Group -->
+              <div class="form-group">
+                <label>Company Contact Person</label>
+                <input id="company_contact_person" class="form-control" type="text" name="company_contact_person" value="<?php echo $view_company['company_contact_person']; ?>" required/>
+              </div>
 
+              <!-- Form Group -->
+              <div class="form-group">
+                <label>company logo <span>(optional)</span></label>
+
+                <!-- Upload Button -->
+                <div class="upload-file-btn">
+                  <span><i class="fa fa-upload"></i> Upload</span>
+                  <input type="file" name="newimage" accept=".jpg,.png,.gif">
+                  <input type="hidden" name="oldimage" value="<?php echo $view_company['imagepath']; ?>">
+                </div>
+                <img class="form-control" src="<?php echo $view_company['imagepath']; ?>" alt="No Logo Uploaded">
+              </div>
+
+              <!-- Form Group -->
+              <div class="form-group pt30 nomargin">
+                <button type="submit" class="btn btn-blue btn-effect">submit</button>
+              </div>
+
+            </div>
           </div>
-        </div>
-        <!-- End of Resume Details -->
+          <!-- End of Resume Details -->
 
-      </form>
+        </form>
 
-    </div>
-    <!-- End of Blog Posts -->
-
-
-    <!-- Start of Blog Sidebar -->
-    <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
+      </div>
+      <!-- End of Blog Posts -->
 
 
-
-      <!-- Start of Social Media -->
+      <!-- Start of Blog Sidebar -->
+      <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
 
 
-      <!-- Start of Categories -->
-      <div class="col-md-12 mt40">
-        <h4 class="widget-title">Company Profile</h4>
-        <ul class="sidebar-list">
-          <li><a href="">Company Profile</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Jobs</h4>
-        <ul class="sidebar-list">
-          <li><a href="postedjobs.php">Posted Jobs</a></li>
-          <li><a href="">Package Details</a></li>
-          <li><a href="">Resume Search</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Manage Jobs</h4>
-        <ul class="sidebar-list">
-          <li><a href="postjob.php">Post a Job</a></li>
-          <li><a href="modifyjob.php">Modify Jobs</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Manage Applications</h4>
-        <ul class="sidebar-list">
-          <li><a href="viewapplications.php">View Applications</a></li>
-          <li><a href="">View Candidate Profile</a></li>
-          <li><a href="">Reply Candidate via Email</a></li>
-          <li><a href="">Save Profile</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Saved Profiles</h4>
-        <ul class="sidebar-list">
-          <li><a href="viewshortlisted.php">View Candidate &amp; Profile</a></li>
-          <li><a href="">Reply Candidate via Email</a></li>
-          <li><a href="">Remove from Saved Listing</a></li>
-        </ul><br/><br/><br/>
-        <h4 class="widget-title">Account Settings</h4>
-        <ul class="sidebar-list">
-          <li><a href="editcompanyprofile.php">Edit Profile</a></li>
-          <li><a href="changecompanypassword.php">Change Password</a></li>
-        </ul>
+        <!-- Start of Social Media -->
+
+
+
+        <!-- Start of Categories -->
+        <div class="col-md-12 mt40">
+          <h4 class="widget-title">Company Profile</h4>
+          <ul class="sidebar-list">
+            <li><a href="">Company Profile</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Jobs</h4>
+          <ul class="sidebar-list">
+            <li><a href="postedjobs.php">Posted Jobs</a></li>
+            <li><a href="">Package Details</a></li>
+            <li><a href="">Resume Search</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Manage Jobs</h4>
+          <ul class="sidebar-list">
+            <li><a href="postjob.php">Post a Job</a></li>
+            <li><a href="modifyjob.php">Modify Jobs</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Manage Applications</h4>
+          <ul class="sidebar-list">
+            <li><a href="viewapplications.php">View Applications <?php echo $appnotif['count'];?></a></li>
+            <li><a href="">View Candidate Profile</a></li>
+            <li><a href="">Reply Candidate via Email</a></li>
+            <li><a href="">Save Profile</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Saved Profiles</h4>
+          <ul class="sidebar-list">
+            <li><a href="viewshortlisted.php">View Candidate &amp; Profile</a></li>
+            <li><a href="">Reply Candidate via Email</a></li>
+            <li><a href="">Remove from Saved Listing</a></li>
+          </ul><br/><br/><br/>
+          <h4 class="widget-title">Account Settings</h4>
+          <ul class="sidebar-list">
+            <li><a href="editcompanyprofile.php">Edit Profile</a></li>
+            <li><a href="changecompanypassword.php">Change Password</a></li>
+          </ul>
         </ul><br/><br/><br/>
         <h4 class="widget-title">Buy Package</h4>
         <ul class="sidebar-list">
@@ -220,10 +249,10 @@ $(document).ready(function(){
       <!-- End of Categories -->
 
 
-  </div>
-  <!-- End of Blog Sidebar -->
+    </div>
+    <!-- End of Blog Sidebar -->
 
-</div>
+  </div>
 </div>
 </section>
 <!-- ===== End of Blog Listing Section ===== -->

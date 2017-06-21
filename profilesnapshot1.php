@@ -12,6 +12,7 @@ else {
   $view_user = $userService->viewUser($userId);
   $view_industry=$userService->viewIndustry();
   $view_functionalarea=$userService->viewFunctionalArea();
+  $view_role_by_fid = $userService->viewRole($view_user['functionalarea_id']);
 }
 
 ?>
@@ -142,6 +143,26 @@ $(document).ready(function(){
   color:red;
 }
 </style>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function() {
+	$("#functionalarea").change(function() {
+  //  alert( $(this).val());
+		$(this).after('<div id="loader"><img src="img/loading.gif" alt="loading subcategory" /></div>');
+		$.get('controller/loadsubcat.php?functionalarea=' + $(this).val(), function(data) {
+			$("#role").html(data);
+			$('#loader').slideUp(200, function() {
+				$(this).remove();
+			});
+		});
+    });
+
+});
+</script>
 
 
 <!-- =============== Start of Page Header 1 Section =============== -->
@@ -301,7 +322,7 @@ $(document).ready(function(){
                     foreach($view_role_by_fid as $rolefa)
                     {
                       ?>
-                      <option <?php print($view_user['role_id']==$rolefa['role_id'] ?'selected="selected"': "") ?> value="<?php echo $rolefa['functionalarea_id']; ?>"><?php echo $rolefa['role_name']; ?></option>
+                      <option <?php print($view_user['role_id']==$rolefa['role_id'] ?'selected="selected"': "") ?> value="<?php echo $rolefa['role_id']; ?>"><?php echo $rolefa['role_name']; ?></option>
                       <?php } ?>
                     </select>
                   </div>
@@ -352,26 +373,30 @@ $(document).ready(function(){
                     <option value="O" <?php print($view_user['marital_status']=="O" ?'selected="selected"': "") ?>>Other</option>
                   </select>
                 </div>
-
+                <img style="height: 300px; width: 200px;" src="<?php echo $view_user['imagepath']; ?>">
                 <!-- Form Group -->
                 <div class="form-group">
                   <label>your photo <span>(optional)</span></label>
 
                   <!-- Upload Button -->
                   <div class="upload-file-btn">
-                    <span><i class="fa fa-upload"></i> Upload</span>
+                    <span><i class="fa fa-upload"></i> Upload Photo</span>
                     <input type="file" name="newimage" accept=".jpg,.png,.gif">
                     <input type="hidden" name="oldimage" value="<?php echo $view_user['imagepath']; ?>">
                   </div>
-                  <img class="form-control" src="<?php echo $view_user['imagepath']; ?>">
+
                 </div>
+
 
                 <!-- Form Group -->
                 <div class="form-group">
                   <label>resume <span>(optional)</span></label>
-                  <input class="form-control" type="file" name="newresumefile" placeholder='upload a copy of your resume'>
+                  <div class="upload-file-btn">
+                    <span><i class="fa fa-upload"></i> Upload Resume</span>
+                  <input type="file" name="newresumefile" placeholder='upload a copy of your resume'>
                   <input type="hidden" name="oldresumefile" value="<?php echo $view_user['resumepath']; ?>">
                 </div>
+              </div>
 
                 <!-- Form Group -->
                 <div class="form-group pt30 nomargin">

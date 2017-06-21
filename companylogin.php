@@ -1,5 +1,7 @@
 <?php
-session_start();     //session starts here
+session_start();
+ //session starts here
+ 
 include "header.php";
 ?>
 

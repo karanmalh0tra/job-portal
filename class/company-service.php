@@ -109,11 +109,12 @@ class CompanyService extends MySql
 				$imagePath=$this->upLoadImage($newimage);
 			}
 			$company_name = $post['company_name'];
+			$company_location = $post['location'];
 			$company_address =  mysql_real_escape_string($post['company_address']);
 			$company_contact = $post['company_contact'];
 			$company_contact_person = $post['company_contact_person'];
 			$company_about = mysql_real_escape_string($post['company_about']);
-			$query="update companies set company_name='$company_name', company_address='$company_address', company_contact='$company_contact', company_contact_person='$company_contact_person', company_about='$company_about'
+			$query="update companies set company_location='$company_location', company_name='$company_name', company_address='$company_address', company_contact='$company_contact', company_contact_person='$company_contact_person', company_about='$company_about', imagepath='$imagePath'
 			where company_id='".$companyId."'";
 			$data = $this->ExecuteQuery($query,"update");
 			$this->commitTransaction();
@@ -212,6 +213,8 @@ class CompanyService extends MySql
 		}
 		return $data;
 	}
+
+
 
 	function getJobDetail($jobId)
 	{
@@ -340,7 +343,7 @@ class CompanyService extends MySql
 		}
 		return $password;
 	}
-
+	//TODO: edit applyforjob for companyid everywhere
 	function applyForJob($userId,$jobId)
 	{
 		$data;
@@ -351,10 +354,53 @@ class CompanyService extends MySql
 			VALUES
 			('".$userId."','".$jobId."', NOW() )";
 			$data = $this->ExecuteQuery($query, "insert");
+			if(!empty($data))
+			{
+				$getcompanyId = $this->getJobDetail($jobId);
+
+
+				$query = "INSERT INTO company_notification (user_id, job_id, company_id)
+				VALUES
+				('".$userId."','".$jobId."', '".$getcompanyId['company_id']."' )";
+				$data = $this->ExecuteQuery($query, "insert");
+			}
 			$this->commitTransaction();
 		}
 		catch(Exception $e)
 		{
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function viewCompanyNotification($companyId)
+	{
+		$view;
+		$this->beginTransaction();
+		try
+		{
+			$query = "SELECT count(*) as count FROM company_notification WHERE company_id='".$companyId."' AND status='unread'";
+			$data = $this->ExecuteQuery($query, "select");
+			$view = $data[0];
+			$this->commitTransaction();
+		}
+		catch(Exception $e)
+		{
+			$this->rollbackTransaction();
+		}
+		return $view;
+	}
+
+	function updateCompanyNotifications($jobId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="update company_notification set status='read' where job_id='$jobId'";
+			$data=$this->ExecuteQuery($query,"update");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
 			$this->rollbackTransaction();
 		}
 		return $data;
@@ -370,12 +416,12 @@ class CompanyService extends MySql
 			$data = $this->ExecuteQuery($query, "select");
 			if(!empty($data))
 			{
-			$data= $data[0];
-		}
-		else {
-			$data=0;
-		}
-		$this->commitTransaction();
+				$data= $data[0];
+			}
+			else {
+				$data=0;
+			}
+			$this->commitTransaction();
 		}
 		catch(Exception $e)
 		{
@@ -482,12 +528,12 @@ class CompanyService extends MySql
 			$data = $this->ExecuteQuery($query, "select");
 			if(!empty($data))
 			{
-			$data= $data[0];
-		}
-		else {
-			$data=0;
-		}
-		$this->commitTransaction();
+				$data= $data[0];
+			}
+			else {
+				$data=0;
+			}
+			$this->commitTransaction();
 		}
 		catch(Exception $e)
 		{
@@ -519,16 +565,16 @@ class CompanyService extends MySql
 			$query = "SELECT * from saved_jobs where user_id='".$userId."' and job_id='".$jobId."' ";
 			$data=$this->ExecuteQuery($query,"select");
 			if(empty($data)){
-			$query = "INSERT INTO saved_jobs (user_id, job_id, status)
-			VALUES
-			('".$userId."','".$jobId."', 'saved' )";
-			$data = $this->ExecuteQuery($query, "insert");
-		}
-		else {
-			$query = "UPDATE saved_jobs set status='saved'
-			where user_id='".$userId."' and job_id='".$jobId."'";
-			$data = $this->ExecuteQuery($query, "update");
-		}
+				$query = "INSERT INTO saved_jobs (user_id, job_id, status)
+				VALUES
+				('".$userId."','".$jobId."', 'saved' )";
+				$data = $this->ExecuteQuery($query, "insert");
+			}
+			else {
+				$query = "UPDATE saved_jobs set status='saved'
+				where user_id='".$userId."' and job_id='".$jobId."'";
+				$data = $this->ExecuteQuery($query, "update");
+			}
 			$this->commitTransaction();
 		}
 		catch(Exception $e)
@@ -564,14 +610,84 @@ class CompanyService extends MySql
 			$keyCount = 0;
 			foreach ($skills1 as $skill) {
 				if ($keyCount > 0){
-        $query .= " and";
-    }
-    $query .= " user_key_skills LIKE '%$skill%'";
-    ++$keyCount;
+					$query .= " and";
+				}
+				$query .= " user_key_skills LIKE '%$skill%'";
+				++$keyCount;
 			}
 			$data=$this->ExecuteQuery($query,"select");
 		} catch (Exception $e) {
-				$this->rollbackTransaction();
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function viewSearchedJobs($keywords, $location, $industryId)
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			if(!empty($industryId))
+			{
+			  $query = "select * from jobs where job_location LIKE '%$location%' and industry_id like '$industryId' and ";
+			}
+			else {
+				$query = "select * from jobs where job_location LIKE '%$location%' and ";
+			}
+			$skills2 = mysql_real_escape_string($keywords);
+			$skills1 = explode(' ', $skills2);
+			$keyCount = 0;
+			foreach ($skills1 as $skill) {
+				if ($keyCount > 0){
+					$query .= " and";
+				}
+				$query .= " job_skills LIKE '%$skill%'";
+				++$keyCount;
+			}
+			$data=$this->ExecuteQuery($query,"select");
+		} catch (Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function viewEightJobs()
+	{
+		$data;
+		$this->beginTransaction();
+		try {
+			$query="SELECT *, Count(*) AS occurances
+    					FROM jobs
+    					GROUP BY industry_id
+    					ORDER BY occurances DESC
+    					LIMIT 8";
+			$data=$this->ExecuteQuery($query,"select");
+			$this->commitTransaction();
+		}
+		catch(Exception $e) {
+			$this->rollbackTransaction();
+		}
+		return $data;
+	}
+
+	function searchCompany($location, $serviceId)
+	{
+		$data;
+		$this->beginTransaction();
+		try{
+			$locationSql = "";
+
+			if(!empty($location))
+			{
+				$locationSql = " and city like '%".$location."%'";
+			}
+			$sql = "select * from company where service_category like '%".$serviceId.",%'". $locationSql ." order by company_id asc";
+			$data = $this->ExecuteQuery($sql, "select");
+			//return $data;
+		}
+		catch(Exception $e)
+		{
+			$this->rollbackTransaction();
 		}
 		return $data;
 	}

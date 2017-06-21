@@ -10,9 +10,9 @@ else {
   require_once "class/user-service.php";
   $userService = new UserService();
   $view_user = $userService->viewUser($userId);
-  $view_industry=$userService->viewIndustry();
-  $view_functionalarea=$userService->viewFunctionalArea();
   $view_education = $userService->viewEducation($userId);
+  $view_graduation=$userService->viewGraduation();
+  $view_specialization=$userService->viewSpecialization($view_education['graduation_id']);
 }
 
 ?>
@@ -69,6 +69,26 @@ $(document).ready(function(){
 }
 </style>
 
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function() {
+	$("#graduation").change(function() {
+  //  alert( $(this).val());
+		$(this).after('<div id="loader"><img src="img/loading.gif" alt="loading subcategory" /></div>');
+		$.get('controller/loadspecialization.php?graduation=' + $(this).val(), function(data) {
+			$("#specialization").html(data);
+			$('#loader').slideUp(200, function() {
+				$(this).remove();
+			});
+		});
+    });
+
+});
+</script>
+
 
 <!-- =============== Start of Page Header 1 Section =============== -->
 <section class="page-header">
@@ -77,7 +97,7 @@ $(document).ready(function(){
     <!-- Start of Page Title -->
     <div class="row">
       <div class="col-md-12">
-        <h2>UPDATE PROFILE SNAPSHOT</h2>
+        <h2>UPDATE Education</h2>
       </div>
     </div>
     <!-- End of Page Title -->
@@ -117,11 +137,11 @@ $(document).ready(function(){
                 <label>Graduation</label>
                 <select id="graduation" class="form-control" name="graduation">
                   <option value="">Select Graduation</option><?php
-                  foreach($view_industry as $industry)
+                  foreach($view_graduation as $graduation)
                   {
                     ?>
-                    <option <?php print($view_user['industry_id']==$industry['industry_id'] ?'selected="selected"': "") ?> value="<?php echo $industry['industry_id']; ?>">
-                      <?php echo $industry['industry_name']; ?></option>
+                    <option <?php print($view_education['graduation_id']==$graduation['graduation_id'] ?'selected="selected"': "") ?> value="<?php echo $graduation['graduation_id']; ?>">
+                      <?php echo $graduation['graduation_name']; ?></option>
                       <?php
                     }
                     ?>
@@ -133,10 +153,10 @@ $(document).ready(function(){
                   <label>Select Specialization</label>
                   <select class="form-control" name="specialization" id="specialization">
                     <option value="">Select Specialization</option><?php
-                    foreach($view_role_by_fid as $rolefa)
+                    foreach($view_specialization as $specialization)
                     {
                       ?>
-                      <option <?php print($view_user['role_id']==$rolefa['role_id'] ?'selected="selected"': "") ?> value="<?php echo $rolefa['functionalarea_id']; ?>"><?php echo $rolefa['role_name']; ?></option>
+                      <option <?php print($view_education['specialization_id']==$specialization['specialization_id'] ?'selected="selected"': "") ?> value="<?php echo $specialization['specialization_id']; ?>"><?php echo $specialization['specialization_name']; ?></option>
                       <?php } ?>
                     </select>
                   </div>
@@ -151,29 +171,25 @@ $(document).ready(function(){
                   <div class="form-group">
                     <label>Year of Graduation</label>
                     <!-- //TODO work on displaying selected year from table -->
-                    <select name="graduationyear" id="selectElementId" class="form-control"></select>
-                    <script>
-                    var min = 1960,
-                    max = new Date().getFullYear() + 4,
-                    select = document.getElementById('selectElementId');
-                    for (var i = max; i>=min; i--){
-                      var opt = document.createElement('option');
-                      opt.value = i;
-                      opt.innerHTML = i;
-                      select.appendChild(opt);
+
+                    <?php
+                    echo '<select name="graduationyear" id="selectElementId" class="form-control">';
+                    for($i=1960;$i<=date("Y");$i++) {
+                      echo '<option value="$i">$i</option>';
                     }
-                    </script>
+                    echo "</select>";
+                    ?>
                   </div>
+                  <?php// print($view_education['university_year']=="" ?"":'$("#selectElementId option[value=\' 'echo $view_education['university_year'];' \']").attr("selected","selected");') ?>
 
                   <div class="form-group">
                     <label>Grading System</label>
-                    <!-- //TODO view year of graduation -->
                     <select id="gradingsystem" class="form-control" name="gradingsystem">
-                      <option value="not specified">Select Grading System</option>
-                      <option value="out of 10">Select 10 Grading System</option>
-                      <option value="out of 4">Select 4 Grading System</option>
-                      <option value="out of 100">% Marks of 100 Maximum</option>
-                      <option value="requires pass">Course Requires a Pass</option>
+                      <option value="" <?php print($view_education['grading_system']=="" ?'selected="selected"': "") ?>>Select Grading System</option>
+                      <option value="10 Grading System" <?php print($view_education['grading_system']=="10 Grading System" ?'selected="selected"': "") ?>>Select 10 Grading System</option>
+                      <option value="4 Grading System" <?php print($view_education['grading_system']=="4 Grading System" ?'selected="selected"': "") ?>>Select 4 Grading System</option>
+                      <option value="100 Grading System" <?php print($view_education['grading_system']=="100 Grading System" ?'selected="selected"': "") ?>>% Marks of 100 Maximum</option>
+                      <option value="Pass" <?php print($view_education['grading_system']=="Pass" ?'selected="selected"': "") ?>>Course Requires a Pass</option>
                     </select>
                   </div>
 
@@ -187,14 +203,13 @@ $(document).ready(function(){
 
                   <div class="form-group">
                     <label>Class X Board</label>
-                    <!--//TODO Make view Board function -->
                     <select id="xboard" class="form-control" name="xboard">
-                      <option value="">Select Board</option>
-                      <option value="CBSE">CBSE</option>
-                      <option value="CISCE">CISCE(ICSE/ISC)</option>
-                      <option value="DIPLOMA">DIPLOMA</option>
-                      <option value="StateBoard">STATE BOARD</option>
-                      <option value="NationalOpenSchool">National Open School</option>
+                      <option value="" <?php print($view_education['x_board']=="" ?'selected="selected"': "") ?>>Select Board</option>
+                      <option value="CBSE" <?php print($view_education['x_board']=="CBSE" ?'selected="selected"': "") ?>>CBSE</option>
+                      <option value="CISCE" <?php print($view_education['x_board']=="CISCE" ?'selected="selected"': "") ?>>CISCE(ICSE/ISC)</option>
+                      <option value="DIPLOMA" <?php print($view_education['x_board']=="DIPLOMA" ?'selected="selected"': "") ?>>DIPLOMA</option>
+                      <option value="StateBoard" <?php print($view_education['x_board']=="StateBoard" ?'selected="selected"': "") ?>>STATE BOARD</option>
+                      <option value="NationalOpenSchool" <?php print($view_education['x_board']=="NationalOpenSchool" ?'selected="selected"': "") ?>>National Open School</option>
                     </select>
                   </div>
 
@@ -226,12 +241,12 @@ $(document).ready(function(){
                   <div class="form-group">
                     <label>Class XII Board</label>
                     <select id="xiiboard" class="form-control" name="xiiboard">
-                      <option value="">Select Board</option>
-                      <option value="CBSE">CBSE</option>
-                      <option value="CISCE">CISCE(ICSE/ISC)</option>
-                      <option value="DIPLOMA">DIPLOMA</option>
-                      <option value="STATEBOARD">STATE BOARD</option>
-                      <option value="NationalOpenSchool">National Open School</option>
+                      <option value="" <?php print($view_education['xii_board']=="" ?'selected="selected"': "") ?>>Select Board</option>
+                      <option value="CBSE" <?php print($view_education['xii_board']=="CBSE" ?'selected="selected"': "") ?>>CBSE</option>
+                      <option value="CISCE" <?php print($view_education['xii_board']=="CISCE" ?'selected="selected"': "") ?>>CISCE(ICSE/ISC)</option>
+                      <option value="DIPLOMA" <?php print($view_education['xii_board']=="DIPLOMA" ?'selected="selected"': "") ?>>DIPLOMA</option>
+                      <option value="STATEBOARD" <?php print($view_education['xii_board']=="STATEBOARD" ?'selected="selected"': "") ?>>STATE BOARD</option>
+                      <option value="NationalOpenSchool" <?php print($view_education['xii_board']=="NationalOpenSchool" ?'selected="selected"': "") ?>>National Open School</option>
                     </select>
                   </div>
 

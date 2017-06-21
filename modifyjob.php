@@ -14,6 +14,7 @@ else {
   $view_job = $companyService->viewJobFromCompany($companyId);
   $view_industry=$userService->viewIndustry();
   $view_functionalarea=$userService->viewFunctionalArea();
+  $appnotif = $companyService->viewCompanyNotification($_SESSION['company_id']);
 }
 
 ?>
@@ -53,7 +54,6 @@ jQuery(document).ready(function(){
 </script>
 
 
-
 <!-- =============== Start of Page Header 1 Section =============== -->
 <section class="page-header">
   <div class="container">
@@ -79,9 +79,6 @@ jQuery(document).ready(function(){
   </div>
 </section>
 <!-- =============== End of Page Header 1 Section =============== -->
-
-
-
 
 
 <!-- ===== Start of Blog Listing Section ===== -->
@@ -134,9 +131,7 @@ jQuery(document).ready(function(){
       <div class="col-md-4 col-md-pull-8 col-xs-12 blog-sidebar">
 
 
-
         <!-- Start of Social Media -->
-
 
 
         <!-- Start of Categories -->
@@ -158,7 +153,7 @@ jQuery(document).ready(function(){
           </ul><br/><br/><br/>
           <h4 class="widget-title">Manage Applications</h4>
           <ul class="sidebar-list">
-            <li><a href="viewapplications.php">View Applications</a></li>
+            <li><a href="viewapplications.php">View Applications <?php echo $appnotif['count'];?></a></li>
             <li><a href="">View Candidate Profile</a></li>
             <li><a href="">Reply Candidate via Email</a></li>
             <li><a href="">Save Profile</a></li>

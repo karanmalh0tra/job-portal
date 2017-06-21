@@ -16,6 +16,8 @@ else {
   $view_applications = $companyService->viewApplications($jobId);
   $view_job_from_company = $companyService->viewJobFromCompany($companyId);
   $get_job_detail = $companyService->getJobDetail($jobId);
+  $updateCompanyNotifications = $companyService->updateCompanyNotifications($jobId);
+  $appnotif = $companyService->viewCompanyNotification($_SESSION['company_id']);
 
 }
 
@@ -121,7 +123,7 @@ else {
             </ul><br/><br/><br/>
             <h4 class="widget-title">Manage Applications</h4>
             <ul class="sidebar-list">
-              <li><a href="viewapplications.php">View Applications</a></li>
+              <li><a href="viewapplications.php">View Applications <?php echo $appnotif['count'];?></a></li>
               <li><a href="">View Candidate Profile</a></li>
               <li><a href="">Reply Candidate via Email</a></li>
               <li><a href="">Save Profile</a></li>
